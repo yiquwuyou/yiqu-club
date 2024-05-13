@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.yiquwuyou</groupId>
+    <artifactId>yiqu-club-subject</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <description>一曲无忧club-题目模块服务</description>
+
+    <modules>
+        <module>yiqu-club-subject-api</module>
+        <module>yiqu-club-application</module>
+        <module>yiqu-club-domain</module>
+        <module>yiqu-club-common</module>
+        <module>yiqu-club-infra</module>
+        <module>yiqu-club-starter</module>
+    </modules>
+
+
+</project>
