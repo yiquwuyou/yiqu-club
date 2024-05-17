@@ -11,5 +11,13 @@
 
     <artifactId>yiqu-club-domain</artifactId>
 
+    <dependencies>
+        <!-- 引入基础设施层 -->
+        <dependency>
+            <groupId>com.yiquwuyou</groupId>
+            <artifactId>yiqu-club-infra</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
+    </dependencies>
 </project>

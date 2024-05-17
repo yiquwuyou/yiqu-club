@@ -11,5 +11,23 @@
 
     <artifactId>yiqu-club-application-controller</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yiquwuyou</groupId>
+            <artifactId>yiqu-club-infra</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- 引入domain层 -->
+        <dependency>
+            <groupId>com.yiquwuyou</groupId>
+            <artifactId>yiqu-club-domain</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>
