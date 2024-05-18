@@ -2,11 +2,13 @@ package com.yiquwuyou.subject.domain.convert;
 
 import com.yiquwuyou.subject.domain.entity.SubjectAnswerBO;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectMultiple;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-05-18T09:51:43+0800",
+    date = "2024-05-18T20:27:54+0800",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 1.8.0_192 (Oracle Corporation)"
 )
 public class MultipleSubjectConverterImpl implements MultipleSubjectConverter {
@@ -26,5 +28,35 @@ public class MultipleSubjectConverterImpl implements MultipleSubjectConverter {
         subjectMultiple.setIsCorrect( subjectAnswerBO.getIsCorrect() );
 
         return subjectMultiple;
+    }
+
+    @Override
+    public List<SubjectAnswerBO> convertEntityToBoList(List<SubjectMultiple> subjectMultipleList) {
+        if ( subjectMultipleList == null ) {
+            return null;
+        }
+
+        List<SubjectAnswerBO> list = new ArrayList<SubjectAnswerBO>( subjectMultipleList.size() );
+        for ( SubjectMultiple subjectMultiple : subjectMultipleList ) {
+            list.add( subjectMultipleToSubjectAnswerBO( subjectMultiple ) );
+        }
+
+        return list;
+    }
+
+    protected SubjectAnswerBO subjectMultipleToSubjectAnswerBO(SubjectMultiple subjectMultiple) {
+        if ( subjectMultiple == null ) {
+            return null;
+        }
+
+        SubjectAnswerBO subjectAnswerBO = new SubjectAnswerBO();
+
+        if ( subjectMultiple.getOptionType() != null ) {
+            subjectAnswerBO.setOptionType( subjectMultiple.getOptionType().intValue() );
+        }
+        subjectAnswerBO.setOptionContent( subjectMultiple.getOptionContent() );
+        subjectAnswerBO.setIsCorrect( subjectMultiple.getIsCorrect() );
+
+        return subjectAnswerBO;
     }
 }

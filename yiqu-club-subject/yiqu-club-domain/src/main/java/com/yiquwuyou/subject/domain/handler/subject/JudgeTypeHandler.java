@@ -2,6 +2,7 @@ package com.yiquwuyou.subject.domain.handler.subject;
 
 import com.yiquwuyou.subject.common.enums.IsDeletedFlagEnum;
 import com.yiquwuyou.subject.common.enums.SubjectInfoTypeEnum;
+import com.yiquwuyou.subject.domain.convert.JudgeSubjectConverter;
 import com.yiquwuyou.subject.domain.entity.SubjectAnswerBO;
 import com.yiquwuyou.subject.domain.entity.SubjectInfoBO;
 import com.yiquwuyou.subject.domain.entity.SubjectOptionBO;
@@ -10,6 +11,7 @@ import com.yiquwuyou.subject.infra.basic.service.SubjectJudgeService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 判断题目的策略类
@@ -41,6 +43,12 @@ public class JudgeTypeHandler implements SubjectTypeHandler{
 
     @Override
     public SubjectOptionBO query(int subjectId) {
-        return null;
+        SubjectJudge subjectJudge = new SubjectJudge();
+        subjectJudge.setSubjectId(Long.valueOf(subjectId));
+        List<SubjectJudge> result = subjectJudgeService.queryByCondition(subjectJudge);
+        List<SubjectAnswerBO> subjectAnswerBOList = JudgeSubjectConverter.INSTANCE.convertEntityToBoList(result);
+        SubjectOptionBO subjectOptionBO = new SubjectOptionBO();
+        subjectOptionBO.setOptionList(subjectAnswerBOList);
+        return subjectOptionBO;
     }
 }

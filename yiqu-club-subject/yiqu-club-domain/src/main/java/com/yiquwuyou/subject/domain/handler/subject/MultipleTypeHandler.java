@@ -3,6 +3,7 @@ package com.yiquwuyou.subject.domain.handler.subject;
 import com.yiquwuyou.subject.common.enums.IsDeletedFlagEnum;
 import com.yiquwuyou.subject.common.enums.SubjectInfoTypeEnum;
 import com.yiquwuyou.subject.domain.convert.MultipleSubjectConverter;
+import com.yiquwuyou.subject.domain.entity.SubjectAnswerBO;
 import com.yiquwuyou.subject.domain.entity.SubjectInfoBO;
 import com.yiquwuyou.subject.domain.entity.SubjectOptionBO;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectMultiple;
@@ -45,6 +46,12 @@ public class MultipleTypeHandler implements SubjectTypeHandler{
 
     @Override
     public SubjectOptionBO query(int subjectId) {
-        return null;
+        SubjectMultiple subjectMultiple = new SubjectMultiple();
+        subjectMultiple.setSubjectId(Long.valueOf(subjectId));
+        List<SubjectMultiple> result = subjectMultipleService.queryByCondition(subjectMultiple);
+        List<SubjectAnswerBO> subjectAnswerBOList = MultipleSubjectConverter.INSTANCE.convertEntityToBoList(result);
+        SubjectOptionBO subjectOptionBO = new SubjectOptionBO();
+        subjectOptionBO.setOptionList(subjectAnswerBOList);
+        return subjectOptionBO;
     }
 }

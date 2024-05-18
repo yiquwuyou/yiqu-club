@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 题目dto
+ * 题目bo
  *
  * @author: ChickenWing
  * @date: 2023/10/5

@@ -1,5 +1,6 @@
 package com.yiquwuyou.subject.application.dto;
 
+import com.yiquwuyou.subject.common.entity.PageInfo;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,7 +14,7 @@ import java.util.List;
  * @since 2024-05-17 23:46:38
  */
 @Data
-public class SubjectInfoDTO implements Serializable {
+public class SubjectInfoDTO extends PageInfo implements Serializable {
     private static final long serialVersionUID = 893770188748562073L;
 /**
      * 主键
@@ -66,6 +67,16 @@ public class SubjectInfoDTO implements Serializable {
      */
     private List<SubjectAnswerDTO> optionList;
 
+    /**
+     * 标签name
+     */
+    private List<String> labelName;
+
+    // 分类id
+    private Long categoryId;
+
+    // 标签id
+    private Long labelId;
 
 }
 

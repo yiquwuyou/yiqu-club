@@ -3,6 +3,7 @@ package com.yiquwuyou.subject.domain.handler.subject;
 import com.yiquwuyou.subject.common.enums.IsDeletedFlagEnum;
 import com.yiquwuyou.subject.common.enums.SubjectInfoTypeEnum;
 import com.yiquwuyou.subject.domain.convert.RadioSubjectConverter;
+import com.yiquwuyou.subject.domain.entity.SubjectAnswerBO;
 import com.yiquwuyou.subject.domain.entity.SubjectInfoBO;
 import com.yiquwuyou.subject.domain.entity.SubjectOptionBO;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectRadio;
@@ -45,7 +46,13 @@ public class RadioTypeHandler implements SubjectTypeHandler {
 
     @Override
     public SubjectOptionBO query(int subjectId) {
-        return null;
+        SubjectRadio subjectRadio = new SubjectRadio();
+        subjectRadio.setSubjectId(Long.valueOf(subjectId));
+        List<SubjectRadio> result = subjectRadioService.queryByCondition(subjectRadio);
+        List<SubjectAnswerBO> subjectAnswerBOList = RadioSubjectConverter.INSTANCE.convertEntityToBoList(result);
+        SubjectOptionBO subjectOptionBO = new SubjectOptionBO();
+        subjectOptionBO.setOptionList(subjectAnswerBOList);
+        return subjectOptionBO;
     }
 
 }
