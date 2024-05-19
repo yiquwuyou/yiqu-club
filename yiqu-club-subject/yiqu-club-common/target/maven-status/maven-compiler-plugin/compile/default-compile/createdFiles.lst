@@ -1,0 +1,7 @@
+com\yiquwuyou\subject\common\enums\CategoryTypeEnum.class
+com\yiquwuyou\subject\common\entity\Result.class
+com\yiquwuyou\subject\common\enums\ResultCodeEnum.class
+com\yiquwuyou\subject\common\enums\SubjectInfoTypeEnum.class
+com\yiquwuyou\subject\common\enums\IsDeletedFlagEnum.class
+com\yiquwuyou\subject\common\entity\PageInfo.class
+com\yiquwuyou\subject\common\entity\PageResult.class
