@@ -11,6 +11,7 @@
         <module name="yiqu-club-domain" />
         <module name="yiqu-club-application-mq" />
         <module name="yiqu-club-common" />
+        <module name="yiqu-club-oss" />
         <module name="yiqu-club-application-controller" />
         <module name="yiqu-club-infra" />
         <module name="yiqu-club-starter" />
