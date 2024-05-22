@@ -4,6 +4,7 @@ import com.yiquwuyou.oss.adapter.AliStorageAdapter;
 import com.yiquwuyou.oss.adapter.MinioStorageAdapter;
 import com.yiquwuyou.oss.adapter.StorageAdapter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,12 +15,14 @@ import org.springframework.context.annotation.Configuration;
  * @date: 2023/10/14
  */
 @Configuration
+@RefreshScope
 public class StorageConfig {
 
     @Value("${storage.service.type}")
     private String storageType;
 
     @Bean
+    @RefreshScope
     public StorageAdapter storageService() {
         if ("minio".equals(storageType)) {
             return new MinioStorageAdapter();
