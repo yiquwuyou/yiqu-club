@@ -2,12 +2,15 @@ package com.yiquwuyou.subject.domain.service.impl;
 
 import com.alibaba.fastjson.JSON;
 
+import com.yiquwuyou.subject.common.enums.CategoryTypeEnum;
 import com.yiquwuyou.subject.common.enums.IsDeletedFlagEnum;
 import com.yiquwuyou.subject.domain.convert.SubjectLabelConverter;
 import com.yiquwuyou.subject.domain.entity.SubjectLabelBO;
 import com.yiquwuyou.subject.domain.service.SubjectLabelDomainService;
+import com.yiquwuyou.subject.infra.basic.entity.SubjectCategory;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectLabel;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectMapping;
+import com.yiquwuyou.subject.infra.basic.service.SubjectCategoryService;
 import com.yiquwuyou.subject.infra.basic.service.SubjectLabelService;
 import com.yiquwuyou.subject.infra.basic.service.SubjectMappingService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +33,9 @@ public class SubjectLabelDomainServiceImpl implements SubjectLabelDomainService 
 
     @Resource
     private SubjectMappingService subjectMappingService;
+
+    @Resource
+    private SubjectCategoryService subjectCategoryService;
 
     @Override
     public Boolean add(SubjectLabelBO subjectLabelBO) {
@@ -68,6 +74,16 @@ public class SubjectLabelDomainServiceImpl implements SubjectLabelDomainService 
 
     @Override
     public List<SubjectLabelBO> queryLabelByCategoryId(SubjectLabelBO subjectLabelBO) {
+        //如果当前分类是1级分类，则查询所有标签
+        SubjectCategory subjectCategory = subjectCategoryService.queryById(subjectLabelBO.getCategoryId());
+        if(CategoryTypeEnum.PRIMARY.getCode() == subjectCategory.getCategoryType()){
+            SubjectLabel subjectLabel = new SubjectLabel();
+            subjectLabel.setCategoryId(subjectLabelBO.getCategoryId());
+            List<SubjectLabel> labelList = subjectLabelService.queryByCondition(subjectLabel);
+            List<SubjectLabelBO> labelResultList = SubjectLabelConverter.INSTANCE.convertLabelToBoList(labelList);
+            return labelResultList;
+        }
+        // 2级分类则往下走
         Long categoryId = subjectLabelBO.getCategoryId();
         SubjectMapping subjectMapping = new SubjectMapping();
         subjectMapping.setCategoryId(categoryId);
