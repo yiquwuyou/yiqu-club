@@ -1,0 +1,24 @@
+server:
+  port: 5000
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: oss
+          uri: lb://yiqu-club-oss
+          predicates:
+            - Path=/oss/**
+          filters:
+            - StripPrefix=1
+        - id: auth
+          uri: lb://yiqu-club-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+        - id: subject
+          uri: lb://yiqu-club-subject
+          predicates:
+            - Path=/subject/**
+          filters:
+            - StripPrefix=1

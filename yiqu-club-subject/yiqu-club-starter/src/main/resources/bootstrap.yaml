@@ -1,7 +1,7 @@
 
 spring:
   application:
-    name: yiqu-club-oss
+    name: yiqu-club-subject
   profiles:
     active: dev
   cloud:

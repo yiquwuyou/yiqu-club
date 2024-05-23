@@ -1,7 +1,6 @@
-
 spring:
   application:
-    name: yiqu-club-oss
+    name: yiqu-club-gateway
   profiles:
     active: dev
   cloud:
