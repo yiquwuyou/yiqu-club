@@ -36,6 +36,11 @@
             <artifactId>yiqu-club-auth-infra</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.yiquwuyou</groupId>
+            <artifactId>yiqu-club-auth-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
