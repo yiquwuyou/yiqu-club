@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="yiqu-club-application-job" />
         <module name="yiqu-club-auth-common" />
+        <module name="yiqu-club-wx" />
         <module name="yiqu-club-auth-application-mq" />
         <module name="yiqu-club-subject-api" />
         <module name="yiqu-club-domain" />

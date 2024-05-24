@@ -1,6 +1,7 @@
 package com.yiquwuyou.auth.domain.service;
 
 
+import cn.dev33.satoken.stp.SaTokenInfo;
 import com.yiquwuyou.auth.domain.entity.AuthUserBO;
 
 /**
@@ -26,4 +27,5 @@ public interface AuthUserDomainService {
      */
     Boolean delete(AuthUserBO authUserBO);
 
+    SaTokenInfo doLogin(String validCode);
 }
