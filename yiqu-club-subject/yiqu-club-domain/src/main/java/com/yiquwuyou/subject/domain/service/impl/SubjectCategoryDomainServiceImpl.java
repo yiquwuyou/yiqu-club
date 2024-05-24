@@ -28,6 +28,7 @@ public class SubjectCategoryDomainServiceImpl implements SubjectCategoryDomainSe
         }
         SubjectCategory subjectCategory = SubjectCategoryConverter.INSTANCE
                 .convertBoToCategory(subjectCategoryBO);
+        subjectCategory.setIsDeleted(IsDeletedFlagEnum.UN_DELETED.getCode());
         subjectCategoryService.insert(subjectCategory);
     }
 
