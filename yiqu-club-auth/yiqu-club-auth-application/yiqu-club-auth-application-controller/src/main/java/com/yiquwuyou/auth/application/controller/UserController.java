@@ -108,7 +108,7 @@ public class UserController {
     public SaResult doLogin(String username, String password) {
         // 此处仅作模拟示例，真实项目需要从数据库中查询数据进行比对
         if ("zhang".equals(username) && "123456".equals(password)) {
-            StpUtil.login(10001);
+            StpUtil.login("一曲无忧");
             SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
             // 第3步，返回给前端
             return SaResult.data(tokenInfo);

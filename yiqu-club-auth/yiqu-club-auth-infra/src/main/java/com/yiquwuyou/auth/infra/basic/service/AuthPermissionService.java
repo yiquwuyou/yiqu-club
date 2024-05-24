@@ -3,6 +3,8 @@ package com.yiquwuyou.auth.infra.basic.service;
 
 import com.yiquwuyou.auth.infra.basic.entity.AuthPermission;
 
+import java.util.List;
+
 /**
  * (AuthPermission)表服务接口
  *
@@ -44,4 +46,5 @@ public interface AuthPermissionService {
      */
     boolean deleteById(Long id);
 
+    List<AuthPermission> queryByRoleList(List<Long> permissionIdList);
 }
