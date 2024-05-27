@@ -2,6 +2,8 @@ package com.yiquwuyou.auth.infra.basic.service;
 
 import com.yiquwuyou.auth.infra.basic.entity.AuthUser;
 
+import java.util.List;
+
 /**
  * (AuthUser)表服务接口
  *
@@ -42,4 +44,8 @@ public interface AuthUserService {
      */
     boolean deleteById(Long id);
 
+    /**
+     * 根据条件查询数量
+     */
+    List<AuthUser> queryByCondition(AuthUser authUser);
 }

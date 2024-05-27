@@ -1,4 +1,4 @@
-package com.yiquwuyou.auth.entity;
+package com.yiquwuyou.oss.entity;
 
 import lombok.Data;
 

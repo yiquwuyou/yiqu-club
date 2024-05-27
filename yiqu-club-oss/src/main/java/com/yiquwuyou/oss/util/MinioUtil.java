@@ -41,7 +41,7 @@ public class MinioUtil {
     public void uploadFile(InputStream inputStream, String bucket, String objectName) throws Exception {
         // 将文件以流的形式存入minioClient中
         minioClient.putObject(PutObjectArgs.builder().bucket(bucket).object(objectName)
-                .stream(inputStream, -1, Integer.MAX_VALUE).build());
+                .stream(inputStream, -1, 5242889L).build());
     }
 
     /**

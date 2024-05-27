@@ -5,10 +5,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.util.List;
-
 /**
  * 文件存储适配器
- * 
+ *
  * @author: ChickenWing
  * @date: 2023/10/14
  */
@@ -48,6 +47,8 @@ public interface StorageAdapter {
      * 删除文件
      */
     void deleteObject(String bucket, String objectName);
+
+    String getUrl(String bucket, String objectName);
 
 
 }

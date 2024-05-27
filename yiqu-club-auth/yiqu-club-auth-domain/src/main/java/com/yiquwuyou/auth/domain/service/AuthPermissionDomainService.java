@@ -2,6 +2,8 @@ package com.yiquwuyou.auth.domain.service;
 
 import com.yiquwuyou.auth.domain.entity.AuthPermissionBO;
 
+import java.util.List;
+
 /**
  * 角色领域service
  * 
@@ -15,5 +17,7 @@ public interface AuthPermissionDomainService {
     Boolean update(AuthPermissionBO authPermissionBO);
 
     Boolean delete(AuthPermissionBO authPermissionBO);
+
+    List<String> getPermission(String userName);
 
 }
