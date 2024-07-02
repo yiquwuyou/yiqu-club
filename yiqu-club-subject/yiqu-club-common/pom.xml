@@ -20,39 +20,50 @@
     </properties>
 
     <dependencies>
-        <!-- lombok -->
+        <!-- 引入lombok依赖 -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.16</version>
         </dependency>
-        <!-- mapstruct -->
+        <!-- 引入 MapStruct 依赖，用于对象之间的映射，尤其是复杂的DTO到Entity之间的映射 -->
+        <!-- 本项目大量的dto、po、bo等之间的转换，就靠的它 -->
         <!-- mapstruct要放在lombok后面 -->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>1.4.2.Final</version>
         </dependency>
+        <!-- MapStruct的注解处理器，用于在编译时生成映射代码 -->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
             <version>1.4.2.Final</version>
         </dependency>
+        <!-- Spring Boot的Log4j2启动器，用于集成Log4j2日志框架 -->
+        <!-- 替代Spring Boot默认的日志框架（如 Logback），提供更灵活的日志管理 -->
+        <!-- 引入后像往常一样正常使用即可，它只是更换了日志框架，门面是没有更换的 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
             <version>2.4.2</version>
         </dependency>
+        <!-- Fastjson 依赖，一个高性能的JSON处理库，用于将Java对象转换为JSON字符串，或将JSON字符串转换为Java对象 -->
+        <!-- 注意：Fastjson曾存在安全漏洞，使用时请确保更新到最新版本并谨慎使用 -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.24</version>
         </dependency>
+        <!-- Guava 依赖，Google提供的一套核心Java库，包含了新的集合类型（如Multiset和Multimap）、不可变集合
+     、图形库、缓存、支持并发库、通用注解、字符串处理、I/O等等 -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>19.0</version>
         </dependency>
+        <!-- Apache Commons Lang 依赖，提供了对Java的增强，尤其是字符串操作、反射、并发、数学、类型转换等
+     功能，是对Java标准库的一个补充 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

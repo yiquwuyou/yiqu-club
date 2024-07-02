@@ -19,6 +19,7 @@
         <module>yiqu-club-starter</module>
     </modules>
 
+<!--    集成SpringBoot-->
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -29,6 +30,7 @@
         </dependency>
     </dependencies>
 
+<!--    指定项目采用aliyun的maven依赖仓库-->
     <repositories>
         <repository>
             <id>central</id>

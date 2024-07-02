@@ -37,6 +37,8 @@ public class SubjectCategoryController {
     @PostMapping ("/add")
     public Result<Boolean> add(@RequestBody SubjectCategoryDTO subjectCategoryDTO) {
         try {
+            // 此处解释一下为什么要先判断日志级别再打印日志
+            // 因为在高并发场景下，会先进行JSON序列化，再判断日志级别并进行打印，这样非常浪费性能
             if(log.isInfoEnabled()) {
                 log.info("SubjectCategoryController.add.dto: {}", JSON.toJSONString(subjectCategoryDTO));
             }
