@@ -3,7 +3,7 @@ package com.yiquwuyou.oss.entity;
 /**
  * 文件类
  * 
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/12
  */
 public class FileInfo {

@@ -9,7 +9,7 @@ import org.mapstruct.factory.Mappers;
 /**
  * 权限bo转换器
  * 
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/8
  */
 @Mapper

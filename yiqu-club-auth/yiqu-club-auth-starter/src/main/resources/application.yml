@@ -66,4 +66,7 @@ sa-token:
   token-style: random-32
   # 是否输出操作日志
   is-log: true
+  # token前缀，要在原本的token前面加上一段前缀，便于区分
+  # 例如原来： mulxxxxxxxxxxxxxxxxxxx
+  # 现在：    jichi mulxxxxxxxxxxxxxxxxxxx
   token-prefix: jichi

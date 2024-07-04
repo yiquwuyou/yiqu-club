@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 角色领域service
  * 
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/11/1
  */
 public interface AuthPermissionDomainService {

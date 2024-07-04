@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 接收文本消息处理器
+ */
 @Component
 @Slf4j
 public class ReceiveTextMsgHandler implements WxChatMsgHandler {

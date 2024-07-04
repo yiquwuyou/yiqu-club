@@ -37,21 +37,30 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
+        <!-- XStream依赖 -->
+        <!-- 解析xml，用于将Java对象序列化为XML，以及将XML反序列化为Java对象 -->
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
             <version>1.4.18</version>
         </dependency>
+        <!-- Gson依赖 -->
+        <!-- 解析JSON，用于将Java对象转换成JSON格式的字符串，或者将JSON字符串解析成Java对象 -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.5</version>
         </dependency>
+        <!-- Dom4j依赖 -->
+        <!-- 处理xml等格式的数据，和xstram功能类似 -->
         <dependency>
             <groupId>org.dom4j</groupId>
             <artifactId>dom4j</artifactId>
             <version>2.1.1</version>
         </dependency>
+        <!-- Jackson核心库依赖 -->
+        <!-- Jackson是一个流行的Java库，用于将Java对象序列化为JSON格式，以及将JSON字符串反序列化为Java对象 -->
+        <!-- 以下是Jackson核心和数据绑定部分的依赖 -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -62,10 +71,15 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.12.7</version>
         </dependency>
+
+        <!-- redis依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
+        <!-- Apache Commons Pool2 依赖 -->
+        <!-- Apache Commons Pool2是一个对象池化库，用于创建和管理一组可重用的对象 -->
+        <!-- 它常用于数据库连接池、线程池等场景 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>

@@ -6,7 +6,7 @@ import com.yiquwuyou.subject.domain.entity.SubjectInfoBO;
 /**
  * 题目领域服务
  * 
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/3
  */
 public interface SubjectInfoDomainService {

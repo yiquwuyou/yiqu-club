@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * 题目类型枚举
  * 1单选 2多选 3判断 4简答
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/3
  */
 @Getter

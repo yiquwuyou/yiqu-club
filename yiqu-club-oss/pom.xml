@@ -30,6 +30,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+<!--        minio依赖-->
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
@@ -40,18 +41,22 @@
             <artifactId>lombok</artifactId>
             <version>1.18.16</version>
         </dependency>
+<!--        Nacos 配置中心依赖 它允许应用从 Nacos 服务器动态加载配置信息，支持配置文件版本控制、灰度发布等特性。-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
+<!--        引入log4j2日志框架依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
+<!--        Spring Cloud Bootstrap 依赖   是必须的，它使得应用可以在启动时就加载外部配置，如bootstrap.yaml，而不是在应用完全启动后再加载-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
+<!--        Nacos 服务发现依赖  它允许应用注册到 Nacos 服务器，并通过 Nacos 的服务发现机制发现其他服务，支持负载均衡、容错等特性。-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>

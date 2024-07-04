@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * minio配置管理
  *
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/11
  */
 @Configuration
@@ -33,7 +33,8 @@ public class MinioConfig {
     private String secretKey;
 
     /**
-     * 构造minioClient
+     * 构造minioClient，也就是连接minio
+     * 通过Bean的方式注入到spring容器中
      */
     @Bean
     public MinioClient getMinioClient() {

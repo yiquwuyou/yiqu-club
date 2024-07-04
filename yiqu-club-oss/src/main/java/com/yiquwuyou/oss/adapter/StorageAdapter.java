@@ -8,13 +8,13 @@ import java.util.List;
 /**
  * 文件存储适配器
  *
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/14
  */
 public interface StorageAdapter {
 
     /**
-     * 创建bucket桶
+     * 创建bucket桶，桶相当于大文件夹，C盘D盘
      */
     void createBucket(String bucket);
 

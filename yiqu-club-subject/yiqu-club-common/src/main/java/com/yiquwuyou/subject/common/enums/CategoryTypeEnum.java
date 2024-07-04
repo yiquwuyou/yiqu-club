@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * 分类类型枚举
  *
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/3
  */
 @Getter

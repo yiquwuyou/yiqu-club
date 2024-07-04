@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 /**
  * 网关启动器
  * 
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/11
  */
 @SpringBootApplication

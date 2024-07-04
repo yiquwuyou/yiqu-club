@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * mvc的全局处理
  *
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/7
  */
 @Configuration

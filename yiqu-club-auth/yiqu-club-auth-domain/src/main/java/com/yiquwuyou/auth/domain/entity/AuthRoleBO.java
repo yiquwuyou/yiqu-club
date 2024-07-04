@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * 角色bo
  *
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/11/2
  */
 @Data

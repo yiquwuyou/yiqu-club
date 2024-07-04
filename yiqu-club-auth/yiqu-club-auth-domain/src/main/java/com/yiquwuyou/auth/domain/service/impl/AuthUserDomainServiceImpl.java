@@ -69,6 +69,7 @@ public class AuthUserDomainServiceImpl implements AuthUserDomainService {
         }
         AuthUser authUser = AuthUserBOConverter.INSTANCE.convertBOToEntity(authUserBO);
         if (StringUtils.isNotBlank(authUser.getPassword())) {
+            // 密码加密
             authUser.setPassword(SaSecureUtil.md5BySalt(authUser.getPassword(), salt));
         }
         authUser.setStatus(AuthUserStatusEnum.OPEN.getCode());

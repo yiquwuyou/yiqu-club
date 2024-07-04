@@ -7,7 +7,7 @@ import com.yiquwuyou.auth.domain.entity.AuthUserBO;
 /**
  * 用户领域service
  * 
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/11/1
  */
 public interface AuthUserDomainService {

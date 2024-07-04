@@ -3,7 +3,7 @@ package com.yiquwuyou.auth.domain.constants;
 /**
  * auth服务常量
  *
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/11/3
  */
 public class AuthConstant {

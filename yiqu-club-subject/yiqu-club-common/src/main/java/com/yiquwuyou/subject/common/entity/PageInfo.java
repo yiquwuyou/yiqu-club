@@ -3,13 +3,15 @@ package com.yiquwuyou.subject.common.entity;
 /**
  * 分页请求实体
  *
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/5
  */
 public class PageInfo {
 
+    // 当前页数
     private Integer pageNo = 1;
 
+    // 每页数据的数量
     private Integer pageSize = 20;
 
     public Integer getPageNo() {

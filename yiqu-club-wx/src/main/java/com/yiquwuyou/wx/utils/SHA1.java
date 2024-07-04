@@ -8,7 +8,7 @@ import java.util.Arrays;
 /**
  * sha1生成签名工具
  *
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/11/5
  */
 @Slf4j

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 /**
  * 刷题微服务启动类
  *
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/1
  */
 @SpringBootApplication

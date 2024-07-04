@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 题目标签领域服务
  * 
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/3
  */
 public interface SubjectLabelDomainService {

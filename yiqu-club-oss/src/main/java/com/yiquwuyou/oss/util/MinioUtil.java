@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * minio文件操作工具
  *
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/11
  */
 @Component
@@ -40,6 +40,7 @@ public class MinioUtil {
      */
     public void uploadFile(InputStream inputStream, String bucket, String objectName) throws Exception {
         // 将文件以流的形式存入minioClient中
+        // todo: 待修改，设置content-type，看源码是有这个参数的，项目最终前把这个整好
         minioClient.putObject(PutObjectArgs.builder().bucket(bucket).object(objectName)
                 .stream(inputStream, -1, 5242889L).build());
     }

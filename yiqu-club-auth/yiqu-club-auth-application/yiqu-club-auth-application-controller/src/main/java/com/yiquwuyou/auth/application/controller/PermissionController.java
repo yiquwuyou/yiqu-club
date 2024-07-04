@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 /**
  * 权限controller
  *
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/11/2
  */
 @RestController

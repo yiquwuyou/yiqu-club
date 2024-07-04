@@ -3,11 +3,16 @@ server:
 spring:
   cloud:
     gateway:
+      # 配置路由规则
       routes:
+        # id唯一，名称没有要求
         - id: oss
+          # 路由的目标地址，在nacos中注册的服务名
           uri: lb://yiqu-club-oss
+          # 断言，路径匹配，以/oss/开头的请求转发到yiqu-club-oss服务
           predicates:
             - Path=/oss/**
+          # 过滤器，去掉url中的第一个前缀，在此处即去掉/oss
           filters:
             - StripPrefix=1
         - id: auth

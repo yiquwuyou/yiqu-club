@@ -5,6 +5,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+
+/**
+ * 用户关注事件处理器
+ */
 @Component
 @Slf4j
 public class SubscribeMsgHandler implements WxChatMsgHandler {

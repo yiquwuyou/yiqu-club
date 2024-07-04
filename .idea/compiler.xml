@@ -12,11 +12,11 @@
         <module name="yiqu-club-auth-application-mq" />
         <module name="yiqu-club-subject-api" />
         <module name="yiqu-club-domain" />
-        <module name="yiqu-club-application-mq" />
         <module name="yiqu-club-auth-api" />
         <module name="yiqu-club-auth-starter" />
-        <module name="yiqu-club-application-controller" />
+        <module name="yiqu-club-application-mq" />
         <module name="yiqu-club-auth-application-controller" />
+        <module name="yiqu-club-application-controller" />
         <module name="yiqu-club-auth-domain" />
         <module name="yiqu-club-infra" />
         <module name="yiqu-club-auth-infra" />

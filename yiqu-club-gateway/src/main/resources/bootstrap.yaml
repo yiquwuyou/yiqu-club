@@ -11,6 +11,7 @@ spring:
         group: DEFAULT_GROUP
         namespace:
         file-extension: yaml
+      # 服务注册到 nacos 上
       discovery:
         enabled: true
         server-addr: 192.168.17.128:8848

@@ -10,14 +10,15 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * 文件存储config
- *
- * @author: ChickenWing
+ * 在 config 中配置使用哪个文件存储适配器
+ * @author: yiquwuyou
  * @date: 2023/10/14
  */
 @Configuration
 @RefreshScope
 public class StorageConfig {
 
+    // yml里找不到的原因是因为对应配置在nacos里
     @Value("${storage.service.type}")
     private String storageType;
 

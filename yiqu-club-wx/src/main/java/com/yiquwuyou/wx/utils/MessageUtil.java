@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 解析xml格式消息的工具类
+ */
 public class MessageUtil {
 
     /**

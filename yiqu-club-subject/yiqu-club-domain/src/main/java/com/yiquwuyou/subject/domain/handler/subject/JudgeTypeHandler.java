@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * 判断题目的策略类
  *
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/5
  */
 @Component

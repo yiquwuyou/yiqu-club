@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * 用户状态枚举
  * 
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/3
  */
 @Getter

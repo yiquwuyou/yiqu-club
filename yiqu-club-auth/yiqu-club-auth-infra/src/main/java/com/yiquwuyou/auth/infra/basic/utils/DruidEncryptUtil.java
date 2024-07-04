@@ -8,7 +8,7 @@ import java.security.NoSuchProviderException;
 /**
  * 数据库加密util
  *
- * @author: ChickenWing
+ * @author: yiquwuyou
  * @date: 2023/10/1
  */
 public class DruidEncryptUtil {
