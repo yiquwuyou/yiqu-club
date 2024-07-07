@@ -42,7 +42,7 @@ public class SubjectCategoryBO implements Serializable {
     private Integer count;
 
     /**
-     * 标签bo数量
+     * 该分类下的所有标签
      */
     private List<SubjectLabelBO> labelBOList;
 }
