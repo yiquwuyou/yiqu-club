@@ -36,14 +36,16 @@ spring:
           enabled: true   # 启用wall过滤器
         config:
           enabled: true   # 启用config过滤器，这个过滤器主要用于加载配置，通常不直接用于业务功能
-  elasticsearch:
-    rest:
-      uris: http://192.168.17.128:9200
 # 加密后的公钥
 publicKey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJoyV0bOMP3yG3cusJuVGjpUl0fwcacMHrCtulE0mA4sR154p1JylHJLbroEQIkbHwFwBmnm7KgAdBVVIPfp91cCAwEAAQ==
 logging:
   config: classpath:log4j2-spring.xml
-
+es:
+  cluster:
+    esConfigs[0]:
+      name: 4240245a487c
+      nodes: 192.168.17.128:9200
+# 多个集群的话就在下面接着配esConfigs[1]、esConfigs[2]等等
 ## 打印日志
 #mybatis-plus:
 #  configuration:

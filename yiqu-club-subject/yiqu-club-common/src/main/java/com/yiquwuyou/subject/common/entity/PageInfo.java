@@ -1,11 +1,14 @@
 package com.yiquwuyou.subject.common.entity;
 
+import lombok.Data;
+
 /**
  * 分页请求实体
  *
  * @author: yiquwuyou
  * @date: 2023/10/5
  */
+@Data
 public class PageInfo {
 
     // 当前页数

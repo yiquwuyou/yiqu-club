@@ -25,25 +25,6 @@ public class TestFeignController {
     private SubjectEsService subjectEsService;
 
 
-    @GetMapping("testCreateIndex")
-    public void testCreateIndex() {
-        subjectEsService.createIndex();
-    }
-
-    @GetMapping("addDocs")
-    public void addDocs() {
-        subjectEsService.addDoc();
-    }
-
-    @GetMapping("find")
-    public void find() {
-        subjectEsService.find();
-    }
-
-    @GetMapping("search")
-    public void search() {
-        subjectEsService.search();
-    }
 
 
 }

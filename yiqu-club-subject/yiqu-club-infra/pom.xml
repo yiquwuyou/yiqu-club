@@ -50,11 +50,37 @@
             <artifactId>yiqu-club-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-<!--        引入 spring集成的 es 依赖-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-            <version>2.4.2</version>
+            <groupId>com.yiquwuyou</groupId>
+            <artifactId>yiqu-club-auth-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- Elasticsearch核心库依赖 -->
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>7.5.2</version>
+        </dependency>
+
+        <!-- Elasticsearch REST客户端依赖，用于通过HTTP与Elasticsearch集群进行通信 -->
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-client</artifactId>
+            <version>7.5.2</version>
+        </dependency>
+
+        <!-- Elasticsearch高级REST客户端依赖，封装了REST客户端的复杂操作，提供了更高级别的API来与Elasticsearch集群交互 -->
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>7.5.2</version>
+        </dependency>
+
+        <!-- Apache Commons Collections 4库依赖，这是一个扩展了Java Collections Framework的库，提供了许多额外的集合类型以及工具类 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
         </dependency>
     </dependencies>
 

@@ -78,5 +78,7 @@ public class SubjectInfoBO extends PageInfo implements Serializable {
     // 标签id
     private Long labelId;
 
+    private String keyWord;
+
 }
 

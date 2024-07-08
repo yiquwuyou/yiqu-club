@@ -3,6 +3,7 @@ package com.yiquwuyou.subject.domain.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.yiquwuyou.subject.common.entity.PageResult;
 import com.yiquwuyou.subject.common.enums.IsDeletedFlagEnum;
+import com.yiquwuyou.subject.common.util.IdWorkerUtil;
 import com.yiquwuyou.subject.domain.convert.SubjectInfoConverter;
 import com.yiquwuyou.subject.domain.entity.SubjectInfoBO;
 import com.yiquwuyou.subject.domain.entity.SubjectOptionBO;
@@ -10,8 +11,10 @@ import com.yiquwuyou.subject.domain.handler.subject.SubjectTypeHandler;
 import com.yiquwuyou.subject.domain.handler.subject.SubjectTypeHandlerFactory;
 import com.yiquwuyou.subject.domain.service.SubjectInfoDomainService;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectInfo;
+import com.yiquwuyou.subject.infra.basic.entity.SubjectInfoEs;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectLabel;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectMapping;
+import com.yiquwuyou.subject.infra.basic.service.SubjectEsService;
 import com.yiquwuyou.subject.infra.basic.service.SubjectInfoService;
 import com.yiquwuyou.subject.infra.basic.service.SubjectLabelService;
 import com.yiquwuyou.subject.infra.basic.service.SubjectMappingService;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,6 +44,9 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
 
     @Resource
     private SubjectTypeHandlerFactory subjectTypeHandlerFactory;
+
+    @Resource
+    private SubjectEsService subjectEsService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -67,6 +74,16 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
             });
         });
         subjectMappingService.batchInsert(mappingList);
+        //同步到es
+        SubjectInfoEs subjectInfoEs = new SubjectInfoEs();
+        subjectInfoEs.setDocId(new IdWorkerUtil(1,1,1).nextId());
+        subjectInfoEs.setSubjectId(subjectInfo.getId());
+        subjectInfoEs.setSubjectAnswer(subjectInfoBO.getSubjectAnswer());
+        subjectInfoEs.setCreateTime(new Date().getTime());
+        subjectInfoEs.setCreateUser("鸡翅");
+        subjectInfoEs.setSubjectName(subjectInfo.getSubjectName());
+        subjectInfoEs.setSubjectType(subjectInfo.getSubjectType());
+        subjectEsService.insert(subjectInfoEs);
     }
 
     @Override
@@ -106,6 +123,15 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
         return bo;
     }
 
+
+    @Override
+    public PageResult<SubjectInfoEs> getSubjectPageBySearch(SubjectInfoBO subjectInfoBO) {
+        SubjectInfoEs subjectInfoEs = new SubjectInfoEs();
+        subjectInfoEs.setPageNo(subjectInfoBO.getPageNo());
+        subjectInfoEs.setPageSize(subjectInfoBO.getPageSize());
+        subjectInfoEs.setKeyWord(subjectInfoBO.getKeyWord());
+        return subjectEsService.querySubjectList(subjectInfoEs);
+    }
 
 
 }

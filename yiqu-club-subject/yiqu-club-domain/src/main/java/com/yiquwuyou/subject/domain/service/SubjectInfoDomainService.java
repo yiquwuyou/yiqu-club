@@ -2,6 +2,7 @@ package com.yiquwuyou.subject.domain.service;
 
 import com.yiquwuyou.subject.common.entity.PageResult;
 import com.yiquwuyou.subject.domain.entity.SubjectInfoBO;
+import com.yiquwuyou.subject.infra.basic.entity.SubjectInfoEs;
 
 /**
  * 题目领域服务
@@ -28,4 +29,10 @@ public interface SubjectInfoDomainService {
      * 查询题目信息
      */
     SubjectInfoBO querySubjectInfo(SubjectInfoBO subjectInfoBO);
+
+    /**
+     * 全文检索
+     */
+    PageResult<SubjectInfoEs> getSubjectPageBySearch(SubjectInfoBO subjectInfoBO);
+
 }
