@@ -124,6 +124,11 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
     }
 
 
+    /**
+     * 全文检索，高亮查询
+     * @param subjectInfoBO
+     * @return
+     */
     @Override
     public PageResult<SubjectInfoEs> getSubjectPageBySearch(SubjectInfoBO subjectInfoBO) {
         SubjectInfoEs subjectInfoEs = new SubjectInfoEs();

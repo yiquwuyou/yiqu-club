@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * 登录拦截器
- *
+ * 获取登录用户信息，并将用户信息添加到请求头中，向下传递
  * @author: ChickenWing
  * @date: 2023/11/26
  */
@@ -37,8 +37,8 @@ public class LoginFilter implements GlobalFilter {
         log.info("LoginFilter.filter.url:{}", url);
 
         // 判断请求的URL是否为登录URL，如果是，则直接放行，不进行后续校验。
-        if (url.equals("/auth/user/doLogin")) {
-            chain.filter(exchange); // 调用chain.filter方法继续执行下一个过滤器或目标服务。
+        if (url.equals("/user/doLogin")) {
+            return chain.filter(exchange); // 调用chain.filter方法继续执行下一个过滤器或目标服务。
         }
 
         // 尝试从Sa-Token中获取当前用户的Token信息。

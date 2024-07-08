@@ -7,6 +7,7 @@ import com.yiquwuyou.subject.application.convert.SubjectCategoryDTOConverter;
 import com.yiquwuyou.subject.application.convert.SubjectLabelDTOConverter;
 import com.yiquwuyou.subject.application.dto.SubjectCategoryDTO;
 import com.yiquwuyou.subject.application.dto.SubjectLabelDTO;
+import com.yiquwuyou.subject.application.util.LoginUtil;
 import com.yiquwuyou.subject.common.entity.Result;
 import com.yiquwuyou.subject.domain.entity.SubjectCategoryBO;
 import com.yiquwuyou.subject.domain.service.SubjectCategoryDomainService;
@@ -146,6 +147,7 @@ public class SubjectCategoryController {
                 log.info("SubjectCategoryController.queryCategoryAndLabel.dto:{}"
                         , JSON.toJSONString(subjectCategoryDTO));
             }
+            String loginId = LoginUtil.getLoginId();
             Preconditions.checkNotNull(subjectCategoryDTO.getId(), "分类id不能为空");
             SubjectCategoryBO subjectCategoryBO = SubjectCategoryDTOConverter.INSTANCE.
                     convertDtoToCategoryBO(subjectCategoryDTO);

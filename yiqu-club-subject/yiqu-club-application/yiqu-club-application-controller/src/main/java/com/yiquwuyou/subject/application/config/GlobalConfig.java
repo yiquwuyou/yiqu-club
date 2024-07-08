@@ -3,9 +3,11 @@ package com.yiquwuyou.subject.application.config;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.yiquwuyou.subject.application.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import java.util.List;
@@ -27,6 +29,14 @@ public class GlobalConfig extends WebMvcConfigurationSupport {
         super.configureMessageConverters(converters);
         // 向转换器列表中添加我们自定义的MappingJackson2HttpMessageConverter
         converters.add(mappingJackson2HttpMessageConverter());
+    }
+
+    // 配置拦截器
+    // 将自定义拦截器往里放/注册
+    @Override
+    protected void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LoginInterceptor())
+                .addPathPatterns("/**");
     }
 
     // 创建自定义义的转换器，用于配置Jackson的序列化行为
