@@ -109,4 +109,15 @@ public class RedisUtil {
         return set;
     }
 
+    public void putHash(String key, String hashKey, Object hashVal) {
+        redisTemplate.opsForHash().put(key, hashKey, hashVal);
+    }
+
+    public Integer getInt(String key) {
+        return (Integer) redisTemplate.opsForValue().get(key);
+    }
+
+    public void increment(String key,Integer count) {
+        redisTemplate.opsForValue().increment(key,count);
+    }
 }
