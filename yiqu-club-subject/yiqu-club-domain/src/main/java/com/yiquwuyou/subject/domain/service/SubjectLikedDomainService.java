@@ -1,6 +1,7 @@
 package com.yiquwuyou.subject.domain.service;
 
 
+import com.yiquwuyou.subject.common.entity.PageResult;
 import com.yiquwuyou.subject.domain.entity.SubjectLikedBO;
 
 /**
@@ -41,4 +42,11 @@ public interface SubjectLikedDomainService {
      */
     void syncLiked();
 
+
+    /**
+     * 获取 我的点赞
+     * @param subjectLikedBO
+     * @return
+     */
+    PageResult<SubjectLikedBO> getSubjectLikedPage(SubjectLikedBO subjectLikedBO);
 }
