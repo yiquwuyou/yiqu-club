@@ -1,5 +1,6 @@
 package com.yiquwuyou.subject.domain.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.yiquwuyou.subject.common.enums.IsDeletedFlagEnum;
 import com.yiquwuyou.subject.common.enums.SubjectLikedStatusEnum;
 import com.yiquwuyou.subject.domain.convert.SubjectLikedBOConverter;
@@ -9,9 +10,13 @@ import com.yiquwuyou.subject.domain.service.SubjectLikedDomainService;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectLiked;
 import com.yiquwuyou.subject.infra.basic.service.SubjectLikedService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -58,6 +63,22 @@ public class SubjectLikedDomainServiceImpl implements SubjectLikedDomainService 
         }
     }
 
+    @Override
+    public Boolean isLiked(String subjectId, String userId) {
+        String detailKey = SUBJECT_LIKED_DETAIL_KEY + "." + subjectId + "." + userId;
+        return redisUtil.exist(detailKey);
+    }
+
+    @Override
+    public Integer getLikedCount(String subjectId) {
+        String countKey = SUBJECT_LIKED_COUNT_KEY + "." + subjectId;
+        Integer count = redisUtil.getInt(countKey);
+        if (Objects.isNull(count) || count <= 0) {
+            return 0;
+        }
+        return redisUtil.getInt(countKey);
+    }
+
     private String buildSubjectLikedKey(String subjectId, String userId) {
         return subjectId + ":" + userId;
     }
@@ -74,6 +95,33 @@ public class SubjectLikedDomainServiceImpl implements SubjectLikedDomainService 
         subjectLiked.setId(subjectLikedBO.getId());
         subjectLiked.setIsDeleted(IsDeletedFlagEnum.DELETED.getCode());
         return subjectLikedService.update(subjectLiked) > 0;
+    }
+
+    /**
+     * 同步点赞数据
+     */
+    @Override
+    public void syncLiked() {
+        Map<Object, Object> subjectLikedMap = redisUtil.getHashAndDelete(SUBJECT_LIKED_KEY);
+        if (log.isInfoEnabled()) {
+            log.info("syncLiked.subjectLikedMap:{}", JSON.toJSONString(subjectLikedMap));
+        }
+        if (MapUtils.isEmpty(subjectLikedMap)) {
+            return;
+        }
+        //批量同步到数据库
+        List<SubjectLiked> subjectLikedList = new LinkedList<>();
+        subjectLikedMap.forEach((key, val) -> {
+            SubjectLiked subjectLiked = new SubjectLiked();
+            String[] keyArr = key.toString().split(":");
+            String subjectId = keyArr[0];
+            String likedUser = keyArr[1];
+            subjectLiked.setSubjectId(Long.valueOf(subjectId));
+            subjectLiked.setLikeUserId(likedUser);
+            subjectLiked.setStatus(Integer.valueOf(val.toString()));
+            subjectLikedList.add(subjectLiked);
+        });
+        subjectLikedService.batchInsert(subjectLikedList);
     }
 
 }

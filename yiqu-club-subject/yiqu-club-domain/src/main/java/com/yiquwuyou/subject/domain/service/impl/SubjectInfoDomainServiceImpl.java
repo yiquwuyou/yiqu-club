@@ -12,6 +12,7 @@ import com.yiquwuyou.subject.domain.handler.subject.SubjectTypeHandler;
 import com.yiquwuyou.subject.domain.handler.subject.SubjectTypeHandlerFactory;
 import com.yiquwuyou.subject.domain.redis.RedisUtil;
 import com.yiquwuyou.subject.domain.service.SubjectInfoDomainService;
+import com.yiquwuyou.subject.domain.service.SubjectLikedDomainService;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectInfo;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectInfoEs;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectLabel;
@@ -50,6 +51,9 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
 
     @Resource
     private SubjectEsService subjectEsService;
+
+    @Resource
+    private SubjectLikedDomainService subjectLikedDomainService;
 
     @Resource
     private UserRpc userRpc;
@@ -133,6 +137,8 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
         List<SubjectLabel> labelList = subjectLabelService.batchQueryById(labelIdList);
         List<String> labelNameList = labelList.stream().map(SubjectLabel::getLabelName).collect(Collectors.toList());
         bo.setLabelName(labelNameList);
+        bo.setLiked(subjectLikedDomainService.isLiked(subjectInfoBO.getId().toString(), LoginUtil.getLoginId()));
+        bo.setLikedCount(subjectLikedDomainService.getLikedCount(subjectInfoBO.getId().toString()));
         return bo;
     }
 
@@ -154,24 +160,6 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
     /**
      * 获取题目贡献榜/排行榜
      */
-//    @Override
-//    public List<SubjectInfoBO> getContributeList() {
-//        List<SubjectInfo> subjectInfoList = subjectInfoService.getContributeCount();
-//        if (CollectionUtils.isEmpty(subjectInfoList)) {
-//            return Collections.emptyList();
-//        }
-//        List<SubjectInfoBO> boList = new LinkedList<>();
-//        subjectInfoList.forEach((subjectInfo -> {
-//            SubjectInfoBO subjectInfoBO = new SubjectInfoBO();
-//            subjectInfoBO.setSubjectCount(subjectInfo.getSubjectCount());
-//            UserInfo userInfo = userRpc.getUserInfo(subjectInfo.getCreatedBy());
-//            subjectInfoBO.setCreateUser(userInfo.getNickName());
-//            subjectInfoBO.setCreateUserAvatar(userInfo.getAvatar());
-//            boList.add(subjectInfoBO);
-//        }));
-//        return boList;
-//    }
-
     @Override
     public List<SubjectInfoBO> getContributeList() {
         Set<ZSetOperations.TypedTuple<String>> typedTuples = redisUtil.rankWithScore(RANK_KEY, 0, 5);
