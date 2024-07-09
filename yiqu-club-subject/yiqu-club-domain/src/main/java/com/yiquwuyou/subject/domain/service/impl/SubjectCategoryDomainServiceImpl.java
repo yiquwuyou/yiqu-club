@@ -7,6 +7,7 @@ import com.yiquwuyou.subject.domain.convert.SubjectCategoryConverter;
 import com.yiquwuyou.subject.domain.entity.SubjectCategoryBO;
 import com.yiquwuyou.subject.domain.entity.SubjectLabelBO;
 import com.yiquwuyou.subject.domain.service.SubjectCategoryDomainService;
+import com.yiquwuyou.subject.domain.util.CacheUtil;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectCategory;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectLabel;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectMapping;
@@ -40,6 +41,9 @@ public class SubjectCategoryDomainServiceImpl implements SubjectCategoryDomainSe
 
     @Resource
     private ThreadPoolExecutor labelThreadPool;
+
+    @Resource
+    private CacheUtil cacheUtil;
 
     // 插入
     public void add(SubjectCategoryBO subjectCategoryBO) {
@@ -89,16 +93,30 @@ public class SubjectCategoryDomainServiceImpl implements SubjectCategoryDomainSe
         return count > 0;
     }
 
-    // 查询分类及标签
+    /**
+     * 查询分类及标签
+     * 先在本地缓存里找，找不到再去数据库查
+     * cacheUtil是一个工具类，用于缓存数据
+     * @param subjectCategoryBO
+     * @return
+     */
+    @SneakyThrows
+    @Override
+    public List<SubjectCategoryBO> queryCategoryAndLabel(SubjectCategoryBO subjectCategoryBO) {
+        Long id = subjectCategoryBO.getId();
+        String cacheKey = "categoryAndLabel." + subjectCategoryBO.getId();
+        List<SubjectCategoryBO> subjectCategoryBOS = cacheUtil.getResult(cacheKey,
+                SubjectCategoryBO.class, (key) -> getSubjectCategoryBOS(id));
+        return subjectCategoryBOS;
+    }
+
     // 代码思路：大类->分类->标签
     // 1. 首先根据传入的大类ID查询当前大类下所有的分类（产过来的参数虽然是SubjectCategoryBO实体类，但实际上只有大类ID） -> 得到分类列表
     // 2. 然后使用Stream和CompletableFuture来异步处理每个分类的标签查询 -> 得到分类ID和标签业务对象列表的映射关系
-    @SneakyThrows // Lombok注解，用于自动处理异常抛出
-    @Override
-    public List<SubjectCategoryBO> queryCategoryAndLabel(SubjectCategoryBO subjectCategoryBO) {
+    private List<SubjectCategoryBO> getSubjectCategoryBOS(Long categoryId) {
         // 查询当前大类下所有分类（根据大类ID查询）
         SubjectCategory subjectCategory = new SubjectCategory();
-        subjectCategory.setParentId(subjectCategoryBO.getId()); // 设置父ID
+        subjectCategory.setParentId(categoryId); // 设置父ID
         subjectCategory.setIsDeleted(IsDeletedFlagEnum.UN_DELETED.getCode()); // 设置未删除状态
         // 查询分类列表 -> 得到分类列表
         List<SubjectCategory> subjectCategoryList = subjectCategoryService.queryCategory(subjectCategory); // 执行查询
