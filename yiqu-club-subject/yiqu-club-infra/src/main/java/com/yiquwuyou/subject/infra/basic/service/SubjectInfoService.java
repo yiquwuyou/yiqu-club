@@ -50,4 +50,9 @@ public interface SubjectInfoService {
 
     // 分页查询该分类和标签下的题目
     List<SubjectInfo> queryPage(SubjectInfo subjectInfo, Long categoryId, Long labelId, int start, Integer pageSize);
+
+    /**
+     * 获取题目贡献榜/排行榜
+     */
+    List<SubjectInfo> getContributeCount();
 }

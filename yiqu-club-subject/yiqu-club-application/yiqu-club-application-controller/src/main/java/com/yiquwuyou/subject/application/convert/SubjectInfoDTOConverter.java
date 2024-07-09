@@ -5,6 +5,8 @@ import com.yiquwuyou.subject.domain.entity.SubjectInfoBO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 public interface SubjectInfoDTOConverter {
 
@@ -14,5 +16,6 @@ public interface SubjectInfoDTOConverter {
 
     SubjectInfoDTO convertBOToDTO(SubjectInfoBO subjectInfoBO);
 
+    List<SubjectInfoDTO> convertBOToDTOList(List<SubjectInfoBO> subjectInfoBO);
 
 }

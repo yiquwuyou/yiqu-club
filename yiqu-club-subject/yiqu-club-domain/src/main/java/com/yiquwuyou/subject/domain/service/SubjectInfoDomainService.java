@@ -4,6 +4,8 @@ import com.yiquwuyou.subject.common.entity.PageResult;
 import com.yiquwuyou.subject.domain.entity.SubjectInfoBO;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectInfoEs;
 
+import java.util.List;
+
 /**
  * 题目领域服务
  * 
@@ -34,5 +36,10 @@ public interface SubjectInfoDomainService {
      * 全文检索
      */
     PageResult<SubjectInfoEs> getSubjectPageBySearch(SubjectInfoBO subjectInfoBO);
+
+    /**
+     * 获取题目贡献榜/排行榜
+     */
+    List<SubjectInfoBO> getContributeList();
 
 }

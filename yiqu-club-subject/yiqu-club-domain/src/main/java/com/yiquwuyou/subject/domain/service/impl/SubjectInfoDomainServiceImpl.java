@@ -18,15 +18,15 @@ import com.yiquwuyou.subject.infra.basic.service.SubjectEsService;
 import com.yiquwuyou.subject.infra.basic.service.SubjectInfoService;
 import com.yiquwuyou.subject.infra.basic.service.SubjectLabelService;
 import com.yiquwuyou.subject.infra.basic.service.SubjectMappingService;
+import com.yiquwuyou.subject.infra.entity.UserInfo;
+import com.yiquwuyou.subject.infra.rpc.UserRpc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,6 +47,9 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
 
     @Resource
     private SubjectEsService subjectEsService;
+
+    @Resource
+    private UserRpc userRpc;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -138,5 +141,25 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
         return subjectEsService.querySubjectList(subjectInfoEs);
     }
 
+    /**
+     * 获取题目贡献榜/排行榜
+     */
+    @Override
+    public List<SubjectInfoBO> getContributeList() {
+        List<SubjectInfo> subjectInfoList = subjectInfoService.getContributeCount();
+        if (CollectionUtils.isEmpty(subjectInfoList)) {
+            return Collections.emptyList();
+        }
+        List<SubjectInfoBO> boList = new LinkedList<>();
+        subjectInfoList.forEach((subjectInfo -> {
+            SubjectInfoBO subjectInfoBO = new SubjectInfoBO();
+            subjectInfoBO.setSubjectCount(subjectInfo.getSubjectCount());
+            UserInfo userInfo = userRpc.getUserInfo(subjectInfo.getCreatedBy());
+            subjectInfoBO.setCreateUser(userInfo.getNickName());
+            subjectInfoBO.setCreateUserAvatar(userInfo.getAvatar());
+            boList.add(subjectInfoBO);
+        }));
+        return boList;
+    }
 
 }

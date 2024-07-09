@@ -86,5 +86,10 @@ public interface SubjectInfoDao {
                                 @Param("labelId")Long labelId,
                                 @Param("start") int start,
                                 @Param("pageSize") Integer pageSize);
+
+    /**
+     * 获取题目贡献榜/排行榜
+     */
+    List<SubjectInfo> getContributeCount();
 }
 

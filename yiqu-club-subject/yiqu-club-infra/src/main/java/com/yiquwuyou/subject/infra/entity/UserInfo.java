@@ -9,4 +9,7 @@ public class UserInfo {
 
     private String nickName;
 
+    // 头像
+    private String avatar;
+
 }
