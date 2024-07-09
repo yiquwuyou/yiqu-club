@@ -9,6 +9,7 @@
         <module name="yiqu-club-application-job" />
         <module name="yiqu-club-auth-common" />
         <module name="yiqu-club-wx" />
+        <module name="easy-gen-code-spring-boot-starter" />
         <module name="yiqu-club-auth-application-mq" />
         <module name="yiqu-club-subject-api" />
         <module name="yiqu-club-domain" />
@@ -25,8 +26,18 @@
         <module name="yiqu-club-oss" />
         <module name="yiqu-club-auth-application-job" />
         <module name="yiqu-club-starter" />
+        <module name="yiqu-club-gen" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="8" />
+    <bytecodeTargetLevel target="8">
+      <module name="jc-club-common-starter" target="1.8" />
+      <module name="jc-club-gen" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="jc-club-gen" options="-parameters" />
+      <module name="yiqu-club-gen" options="-parameters" />
+    </option>
   </component>
 </project>
