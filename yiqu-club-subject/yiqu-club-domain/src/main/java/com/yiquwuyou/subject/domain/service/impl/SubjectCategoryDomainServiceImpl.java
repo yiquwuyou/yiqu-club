@@ -16,6 +16,7 @@ import com.yiquwuyou.subject.infra.basic.service.SubjectLabelService;
 import com.yiquwuyou.subject.infra.basic.service.SubjectMappingService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -142,7 +143,10 @@ public class SubjectCategoryDomainServiceImpl implements SubjectCategoryDomainSe
         completableFutureList.forEach(future -> {
             try {
                 Map<Long, List<SubjectLabelBO>> resultMap = future.get(); // 获取异步任务的结果
-                map.putAll(resultMap); // 将结果合并到map中
+                if (!MapUtils.isEmpty(resultMap)) {
+                    // 将结果合并到map中
+                    map.putAll(resultMap);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -152,7 +156,9 @@ public class SubjectCategoryDomainServiceImpl implements SubjectCategoryDomainSe
         categoryBOList.forEach(categoryBO -> {
             // 所有的标签列表都在map中，是以 分类ID -> 标签列表 的键值对形式存储的
             // 现在就是根据分类ID来获取对应的标签列表，并赋值给分类对象
-            categoryBO.setLabelBOList(map.getOrDefault(categoryBO.getId(), Collections.emptyList())); // 使用getOrDefault确保即使找不到标签列表也返回一个空列表
+            if (!CollectionUtils.isEmpty(map.get(categoryBO.getId()))) {
+                categoryBO.setLabelBOList(map.get(categoryBO.getId()));
+            }// 使用getOrDefault确保即使找不到标签列表也返回一个空列表
         });
 
         return categoryBOList; // 返回处理后的业务对象列表
