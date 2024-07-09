@@ -72,6 +72,9 @@ public class AuthUserDomainServiceImpl implements AuthUserDomainService {
             // 密码加密
             authUser.setPassword(SaSecureUtil.md5BySalt(authUser.getPassword(), salt));
         }
+        if (StringUtils.isBlank(authUser.getAvatar())) {
+            authUser.setAvatar("https://tse1-mm.cn.bing.net/th/id/OIP-C.1SJSAzXx_ijZEYZS84rzEAAAAA?rs=1&pid=ImgDetMain");
+        }
         authUser.setStatus(AuthUserStatusEnum.OPEN.getCode());
         authUser.setIsDeleted(IsDeletedFlagEnum.UN_DELETED.getCode());
         Integer count = authUserService.insert(authUser);
