@@ -55,4 +55,9 @@ public interface SubjectLikedService {
     int countByCondition(SubjectLiked subjectLiked);
 
     List<SubjectLiked> queryPage(SubjectLiked subjectLiked, int start, Integer pageSize);
+
+    /**
+     * 插入点赞数据，若数据库中已有对应id的数据，则更新
+     */
+    void batchInsertOrUpdate(List<SubjectLiked> subjectLikedList);
 }

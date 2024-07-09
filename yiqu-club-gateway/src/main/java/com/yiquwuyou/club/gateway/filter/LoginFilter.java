@@ -2,11 +2,13 @@ package com.yiquwuyou.club.gateway.filter;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import com.google.gson.Gson;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
@@ -29,6 +31,7 @@ public class LoginFilter implements GlobalFilter {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // 获取当前请求的ServerHttpRequest对象。
         ServerHttpRequest request = exchange.getRequest();
+        ServerHttpResponse response = exchange.getResponse();
         // 创建一个ServerHttpRequest.Builder对象，用于修改原始请求。
         ServerHttpRequest.Builder mutate = request.mutate();
         // 获取请求的URL路径。
@@ -43,16 +46,11 @@ public class LoginFilter implements GlobalFilter {
 
         // 尝试从Sa-Token中获取当前用户的Token信息。
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+        log.info("LoginFilter.filter.url:{}", new Gson().toJson(tokenInfo));
         // 从Token信息中获取登录ID。
         String loginId = (String) tokenInfo.getLoginId();
-        // 如果登录ID为空，则抛出异常。
-        if (StringUtils.isEmpty(loginId)) {
-            throw new Exception("未获取到用户信息");
-        }
-
         // 将登录ID添加到请求头中，以便后续处理。
         mutate.header("loginId", loginId);
-
         // 构建修改后的请求，并继续执行过滤器链。
         // 注意：这里通过exchange.mutate().request(mutate.build()).build()来创建一个新的ServerWebExchange对象，
         // 它包含了修改后的请求。这是响应式编程中常见的做法，用于在不修改原始对象的情况下生成新的对象。

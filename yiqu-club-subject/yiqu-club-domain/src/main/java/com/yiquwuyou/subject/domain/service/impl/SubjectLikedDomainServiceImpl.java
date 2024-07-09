@@ -124,7 +124,8 @@ public class SubjectLikedDomainServiceImpl implements SubjectLikedDomainService 
             subjectLiked.setIsDeleted(IsDeletedFlagEnum.UN_DELETED.getCode());
             subjectLikedList.add(subjectLiked);
         });
-        subjectLikedService.batchInsert(subjectLikedList);
+        // 插入点赞数据，若数据库中已有对应id的数据，则更新
+        subjectLikedService.batchInsertOrUpdate(subjectLikedList);
     }
 
     @Override

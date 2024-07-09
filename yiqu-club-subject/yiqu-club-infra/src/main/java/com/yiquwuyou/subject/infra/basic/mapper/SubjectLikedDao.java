@@ -24,5 +24,9 @@ public interface SubjectLikedDao extends BaseMapper<SubjectLiked> {
                                  @Param("start") int start,
                                  @Param("pageSize") Integer pageSize);
 
+    /**
+     * 插入点赞数据，若数据库中已有对应id的数据，则更新
+     */
+    void batchInsertOrUpdate(@Param("entities") List<SubjectLiked> subjectLikedList);
 }
 
