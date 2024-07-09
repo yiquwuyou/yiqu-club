@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.yiquwuyou.subject.common.entity.PageResult;
 import com.yiquwuyou.subject.common.enums.IsDeletedFlagEnum;
 import com.yiquwuyou.subject.common.util.IdWorkerUtil;
+import com.yiquwuyou.subject.common.util.LoginUtil;
 import com.yiquwuyou.subject.domain.convert.SubjectInfoConverter;
 import com.yiquwuyou.subject.domain.entity.SubjectInfoBO;
 import com.yiquwuyou.subject.domain.entity.SubjectOptionBO;
 import com.yiquwuyou.subject.domain.handler.subject.SubjectTypeHandler;
 import com.yiquwuyou.subject.domain.handler.subject.SubjectTypeHandlerFactory;
+import com.yiquwuyou.subject.domain.redis.RedisUtil;
 import com.yiquwuyou.subject.domain.service.SubjectInfoDomainService;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectInfo;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectInfoEs;
@@ -21,6 +23,7 @@ import com.yiquwuyou.subject.infra.basic.service.SubjectMappingService;
 import com.yiquwuyou.subject.infra.entity.UserInfo;
 import com.yiquwuyou.subject.infra.rpc.UserRpc;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -50,6 +53,11 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
 
     @Resource
     private UserRpc userRpc;
+
+    @Resource
+    private RedisUtil redisUtil;
+
+    private static final String RANK_KEY = "subject_rank";
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -87,6 +95,8 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
         subjectInfoEs.setSubjectName(subjectInfo.getSubjectName());
         subjectInfoEs.setSubjectType(subjectInfo.getSubjectType());
         subjectEsService.insert(subjectInfoEs);
+        //redis放入zadd计入排行榜
+        redisUtil.addScore(RANK_KEY, LoginUtil.getLoginId(), 1);
     }
 
     @Override
@@ -144,17 +154,38 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
     /**
      * 获取题目贡献榜/排行榜
      */
+//    @Override
+//    public List<SubjectInfoBO> getContributeList() {
+//        List<SubjectInfo> subjectInfoList = subjectInfoService.getContributeCount();
+//        if (CollectionUtils.isEmpty(subjectInfoList)) {
+//            return Collections.emptyList();
+//        }
+//        List<SubjectInfoBO> boList = new LinkedList<>();
+//        subjectInfoList.forEach((subjectInfo -> {
+//            SubjectInfoBO subjectInfoBO = new SubjectInfoBO();
+//            subjectInfoBO.setSubjectCount(subjectInfo.getSubjectCount());
+//            UserInfo userInfo = userRpc.getUserInfo(subjectInfo.getCreatedBy());
+//            subjectInfoBO.setCreateUser(userInfo.getNickName());
+//            subjectInfoBO.setCreateUserAvatar(userInfo.getAvatar());
+//            boList.add(subjectInfoBO);
+//        }));
+//        return boList;
+//    }
+
     @Override
     public List<SubjectInfoBO> getContributeList() {
-        List<SubjectInfo> subjectInfoList = subjectInfoService.getContributeCount();
-        if (CollectionUtils.isEmpty(subjectInfoList)) {
+        Set<ZSetOperations.TypedTuple<String>> typedTuples = redisUtil.rankWithScore(RANK_KEY, 0, 5);
+        if (log.isInfoEnabled()) {
+            log.info("getContributeList.typedTuples:{}", JSON.toJSONString(typedTuples));
+        }
+        if (CollectionUtils.isEmpty(typedTuples)) {
             return Collections.emptyList();
         }
         List<SubjectInfoBO> boList = new LinkedList<>();
-        subjectInfoList.forEach((subjectInfo -> {
+        typedTuples.forEach((rank -> {
             SubjectInfoBO subjectInfoBO = new SubjectInfoBO();
-            subjectInfoBO.setSubjectCount(subjectInfo.getSubjectCount());
-            UserInfo userInfo = userRpc.getUserInfo(subjectInfo.getCreatedBy());
+            subjectInfoBO.setSubjectCount(rank.getScore().intValue());
+            UserInfo userInfo = userRpc.getUserInfo(rank.getValue());
             subjectInfoBO.setCreateUser(userInfo.getNickName());
             subjectInfoBO.setCreateUserAvatar(userInfo.getAvatar());
             boList.add(subjectInfoBO);
