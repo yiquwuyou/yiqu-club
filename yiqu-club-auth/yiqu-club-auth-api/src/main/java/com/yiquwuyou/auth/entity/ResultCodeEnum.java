@@ -1,4 +1,4 @@
-package com.yiquwuyou.auth.common.enums;
+package com.yiquwuyou.auth.entity;
 
 import lombok.Getter;
 

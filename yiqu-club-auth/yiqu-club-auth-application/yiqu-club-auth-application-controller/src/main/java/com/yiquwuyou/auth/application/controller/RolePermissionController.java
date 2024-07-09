@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.base.Preconditions;
 import com.yiquwuyou.auth.application.convert.AuthRolePermissionDTOConverter;
 import com.yiquwuyou.auth.application.dto.AuthRolePermissionDTO;
-import com.yiquwuyou.auth.common.entity.Result;
 import com.yiquwuyou.auth.domain.entity.AuthRolePermissionBO;
 import com.yiquwuyou.auth.domain.service.AuthRolePermissionDomainService;
 
+import com.yiquwuyou.auth.entity.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;

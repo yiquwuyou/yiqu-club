@@ -2,14 +2,14 @@ package com.yiquwuyou.auth.application.controller;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.dev33.satoken.util.SaResult;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Preconditions;
 import com.yiquwuyou.auth.application.convert.AuthUserDTOConverter;
-import com.yiquwuyou.auth.application.dto.AuthUserDTO;
-import com.yiquwuyou.auth.common.entity.Result;
 import com.yiquwuyou.auth.domain.entity.AuthUserBO;
 import com.yiquwuyou.auth.domain.service.AuthUserDomainService;
+
+import com.yiquwuyou.auth.entity.AuthUserDTO;
+import com.yiquwuyou.auth.entity.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;

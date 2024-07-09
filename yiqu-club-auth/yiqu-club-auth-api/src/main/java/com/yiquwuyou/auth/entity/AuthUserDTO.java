@@ -1,4 +1,4 @@
-package com.yiquwuyou.auth.application.dto;
+package com.yiquwuyou.auth.entity;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * 用戶信息dto
  *
- * @author: yiquwuyou
+ * @author: ChickenWing
  * @date: 2023/11/1
  */
 @Data

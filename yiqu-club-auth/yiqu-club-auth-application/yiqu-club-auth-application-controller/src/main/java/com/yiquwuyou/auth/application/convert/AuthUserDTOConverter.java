@@ -1,7 +1,7 @@
 package com.yiquwuyou.auth.application.convert;
 
-import com.yiquwuyou.auth.application.dto.AuthUserDTO;
 import com.yiquwuyou.auth.domain.entity.AuthUserBO;
+import com.yiquwuyou.auth.entity.AuthUserDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

@@ -1,6 +1,5 @@
-package com.yiquwuyou.auth.common.entity;
+package com.yiquwuyou.auth.entity;
 
-import com.yiquwuyou.auth.common.enums.ResultCodeEnum;
 import lombok.Data;
 
 @Data
