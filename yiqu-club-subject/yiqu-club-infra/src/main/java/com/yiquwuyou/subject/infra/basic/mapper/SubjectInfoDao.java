@@ -91,5 +91,13 @@ public interface SubjectInfoDao {
      * 获取题目贡献榜/排行榜
      */
     List<SubjectInfo> getContributeCount();
+
+    /**
+     * 查询上一题或下一题的ID
+     */
+    Long querySubjectIdCursor(@Param("subjectId") Long subjectId,
+                              @Param("categoryId") Long categoryId,
+                              @Param("labelId") Long labelId,
+                              @Param("cursor") int cursor);
 }
 

@@ -55,4 +55,6 @@ public interface SubjectInfoService {
      * 获取题目贡献榜/排行榜
      */
     List<SubjectInfo> getContributeCount();
+
+    Long querySubjectIdCursor(Long subjectId, Long categoryId, Long labelId, int cursor);
 }
