@@ -1,7 +1,8 @@
 package com.yiquwuyou.subject.application.interceptor;
 
 
-import com.yiquwuyou.subject.application.context.LoginContextHolder;
+import com.yiquwuyou.subject.common.context.LoginContextHolder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -20,7 +21,9 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String loginId = request.getHeader("loginId");
-        LoginContextHolder.set("loginId", loginId);
+        if (StringUtils.isNotBlank(loginId)) {
+            LoginContextHolder.set("loginId", loginId);
+        }
         return true;
     }
 

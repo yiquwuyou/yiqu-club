@@ -1,7 +1,7 @@
-package com.yiquwuyou.subject.application.util;
+package com.yiquwuyou.subject.common.util;
 
 
-import com.yiquwuyou.subject.application.context.LoginContextHolder;
+import com.yiquwuyou.subject.common.context.LoginContextHolder;
 
 /**
  * 用户登录util

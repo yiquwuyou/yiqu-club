@@ -2,12 +2,10 @@ package com.yiquwuyou.subject.application.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Preconditions;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.yiquwuyou.subject.application.convert.SubjectCategoryDTOConverter;
 import com.yiquwuyou.subject.application.convert.SubjectLabelDTOConverter;
 import com.yiquwuyou.subject.application.dto.SubjectCategoryDTO;
 import com.yiquwuyou.subject.application.dto.SubjectLabelDTO;
-import com.yiquwuyou.subject.application.util.LoginUtil;
 import com.yiquwuyou.subject.common.entity.Result;
 import com.yiquwuyou.subject.domain.entity.SubjectCategoryBO;
 import com.yiquwuyou.subject.domain.service.SubjectCategoryDomainService;

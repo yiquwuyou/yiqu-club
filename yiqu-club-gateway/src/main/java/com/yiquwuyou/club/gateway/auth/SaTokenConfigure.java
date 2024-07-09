@@ -23,7 +23,7 @@ public class SaTokenConfigure {
                     System.out.println("-------- 前端访问path：" + SaHolder.getRequest().getRequestPath());
                     // 登录校验 -- 拦截所有/auth开头的路由，并排除/auth/user/doLogin 用于开放登录
                     // checkRole 验证角色，只有admin角色可以访问
-                    SaRouter.match("/auth/**", "/auth/user/doLogin", r -> StpUtil.checkRole("admin"));
+//                    SaRouter.match("/auth/**", "/auth/user/doLogin", r -> StpUtil.checkRole("admin"));
                     // checkLogin 验证是否登录，登录了才可以进行访问
                     SaRouter.match("/oss/**", r -> StpUtil.checkLogin());
                     // checkPermission 验证权限，只有subject:add权限可以访问
