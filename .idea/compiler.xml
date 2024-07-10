@@ -21,7 +21,9 @@
         <module name="yiqu-club-auth-domain" />
         <module name="yiqu-club-infra" />
         <module name="yiqu-club-auth-infra" />
+        <module name="yiqu-club-practice-server" />
         <module name="yiqu-club-common" />
+        <module name="yiqu-club-practice-api" />
         <module name="yiqu-club-gateway" />
         <module name="yiqu-club-oss" />
         <module name="yiqu-club-auth-application-job" />
@@ -32,6 +34,8 @@
     <bytecodeTargetLevel target="8">
       <module name="jc-club-common-starter" target="1.8" />
       <module name="jc-club-gen" target="1.8" />
+      <module name="jc-club-practice-api" target="1.8" />
+      <module name="jc-club-practice-server" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
