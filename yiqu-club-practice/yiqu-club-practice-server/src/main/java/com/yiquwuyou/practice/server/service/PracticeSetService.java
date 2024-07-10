@@ -1,6 +1,8 @@
 package com.yiquwuyou.practice.server.service;
 
+import com.yiquwuyou.practice.api.vo.PracticeSetVO;
 import com.yiquwuyou.practice.api.vo.SpecialPracticeVO;
+import com.yiquwuyou.practice.server.entity.dto.PracticeSubjectDTO;
 
 import java.util.List;
 
@@ -13,5 +15,10 @@ public interface PracticeSetService {
      * 只要有上述三种题型任意至少一种题型的标签，都会获取并返回
      */
     List<SpecialPracticeVO> getSpecialPracticeContent();
+
+    /**
+     * 开始练习
+     */
+    PracticeSetVO addPractice(PracticeSubjectDTO dto);
 
 }
