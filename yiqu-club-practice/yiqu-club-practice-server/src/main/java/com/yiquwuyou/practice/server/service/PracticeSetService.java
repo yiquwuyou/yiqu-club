@@ -1,6 +1,8 @@
 package com.yiquwuyou.practice.server.service;
 
+import com.yiquwuyou.practice.api.req.GetPracticeSubjectsReq;
 import com.yiquwuyou.practice.api.vo.PracticeSetVO;
+import com.yiquwuyou.practice.api.vo.PracticeSubjectListVO;
 import com.yiquwuyou.practice.api.vo.SpecialPracticeVO;
 import com.yiquwuyou.practice.server.entity.dto.PracticeSubjectDTO;
 
@@ -20,5 +22,10 @@ public interface PracticeSetService {
      * 开始练习
      */
     PracticeSetVO addPractice(PracticeSubjectDTO dto);
+
+    /**
+     * 获取练习题
+     */
+    PracticeSubjectListVO getSubjects(GetPracticeSubjectsReq req);
 
 }

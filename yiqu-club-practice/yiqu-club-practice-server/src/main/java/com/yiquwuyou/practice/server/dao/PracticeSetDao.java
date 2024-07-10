@@ -9,4 +9,5 @@ public interface PracticeSetDao {
      */
     int add(PracticeSetPO po);
 
+    PracticeSetPO selectById(Long setId);
 }

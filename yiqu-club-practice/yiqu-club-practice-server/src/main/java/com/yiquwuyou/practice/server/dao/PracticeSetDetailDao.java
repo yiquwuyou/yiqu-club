@@ -2,6 +2,8 @@ package com.yiquwuyou.practice.server.dao;
 
 import com.yiquwuyou.practice.server.entity.po.PracticeSetDetailPO;
 
+import java.util.List;
+
 public interface PracticeSetDetailDao {
 
     /**
@@ -9,5 +11,6 @@ public interface PracticeSetDetailDao {
      */
     int add(PracticeSetDetailPO po);
 
+    List<PracticeSetDetailPO> selectBySetId(Long setId);
 
 }
