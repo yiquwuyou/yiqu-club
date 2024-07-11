@@ -1,6 +1,10 @@
 package com.yiquwuyou.practice.server.dao;
 
+import com.yiquwuyou.practice.server.entity.dto.PracticeSetDTO;
 import com.yiquwuyou.practice.server.entity.po.PracticeSetPO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface PracticeSetDao {
 
@@ -12,4 +16,17 @@ public interface PracticeSetDao {
     PracticeSetPO selectById(Long setId);
 
     int updateHeat(Long setId);
+
+    /**
+     * 获取模拟考卷列表数量
+     */
+    Integer getListCount(PracticeSetDTO dto);
+
+    /**
+     * 获取模拟考卷列表
+     */
+    List<PracticeSetPO> getSetList(@Param("dto") PracticeSetDTO dto,
+                                   @Param("limit") int limit,
+                                   @Param("offset") int offset);
+
 }

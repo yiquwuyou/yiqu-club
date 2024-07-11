@@ -2,14 +2,17 @@ package com.yiquwuyou.practice.server.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Preconditions;
+import com.yiquwuyou.practice.api.common.PageResult;
 import com.yiquwuyou.practice.api.common.Result;
 import com.yiquwuyou.practice.api.req.GetPracticeSubjectListReq;
 import com.yiquwuyou.practice.api.req.GetPracticeSubjectReq;
 import com.yiquwuyou.practice.api.req.GetPracticeSubjectsReq;
+import com.yiquwuyou.practice.api.req.GetPreSetReq;
 import com.yiquwuyou.practice.api.vo.PracticeSetVO;
 import com.yiquwuyou.practice.api.vo.PracticeSubjectListVO;
 import com.yiquwuyou.practice.api.vo.PracticeSubjectVO;
 import com.yiquwuyou.practice.api.vo.SpecialPracticeVO;
+import com.yiquwuyou.practice.server.entity.dto.PracticeSetDTO;
 import com.yiquwuyou.practice.server.entity.dto.PracticeSubjectDTO;
 import com.yiquwuyou.practice.server.service.PracticeSetService;
 import lombok.extern.slf4j.Slf4j;
@@ -137,6 +140,34 @@ public class PracticeSetController {
         } catch (Exception e) {
             log.error("获取练习详情异常！错误原因{}", e.getMessage(), e);
             return Result.fail("获取练习题目详情异常！");
+        }
+    }
+
+    /**
+     * 获取模拟套题内容
+     */
+    @PostMapping(value = "/getPreSetContent")
+    public Result<PageResult<PracticeSetVO>> getPreSetContent(@RequestBody GetPreSetReq req) {
+        if (log.isInfoEnabled()) {
+            log.info("获取模拟套题内容入参{}", JSON.toJSONString(req));
+        }
+        try {
+            Preconditions.checkArgument(!Objects.isNull(req), "参数不能为空！");
+            PracticeSetDTO dto = new PracticeSetDTO();
+            dto.setOrderType(req.getOrderType());
+            dto.setPageInfo(req.getPageInfo());
+            dto.setSetName(req.getSetName());
+            PageResult<PracticeSetVO> list = practiceSetService.getPreSetContent(dto);
+            if (log.isInfoEnabled()) {
+                log.info("获取模拟套题内容出参{}", JSON.toJSONString(list));
+            }
+            return Result.ok(list);
+        } catch (IllegalArgumentException e) {
+            log.error("参数异常！错误原因{}", e.getMessage(), e);
+            return Result.fail(e.getMessage());
+        } catch (Exception e) {
+            log.error("获取模拟套题内容异常！错误原因{}", e.getMessage(), e);
+            return Result.fail("获取模拟套题内容异常！");
         }
     }
 }

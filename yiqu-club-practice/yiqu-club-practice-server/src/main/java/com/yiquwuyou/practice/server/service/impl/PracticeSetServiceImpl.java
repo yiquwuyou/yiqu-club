@@ -1,5 +1,8 @@
 package com.yiquwuyou.practice.server.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.yiquwuyou.practice.api.common.PageInfo;
+import com.yiquwuyou.practice.api.common.PageResult;
 import com.yiquwuyou.practice.api.enums.CompleteStatusEnum;
 import com.yiquwuyou.practice.api.enums.IsDeletedFlagEnum;
 import com.yiquwuyou.practice.api.enums.SubjectInfoTypeEnum;
@@ -7,6 +10,7 @@ import com.yiquwuyou.practice.api.req.GetPracticeSubjectsReq;
 import com.yiquwuyou.practice.api.vo.*;
 import com.yiquwuyou.practice.server.dao.*;
 import com.yiquwuyou.practice.server.entity.dto.CategoryDTO;
+import com.yiquwuyou.practice.server.entity.dto.PracticeSetDTO;
 import com.yiquwuyou.practice.server.entity.dto.PracticeSubjectDTO;
 import com.yiquwuyou.practice.server.entity.po.*;
 import com.yiquwuyou.practice.server.service.PracticeSetService;
@@ -391,6 +395,35 @@ public class PracticeSetServiceImpl implements PracticeSetService {
             practiceSubjectVO.setOptionList(optionList);
         }
         return practiceSubjectVO;
+    }
+
+    @Override
+    public PageResult<PracticeSetVO> getPreSetContent(PracticeSetDTO dto) {
+        PageResult<PracticeSetVO> pageResult = new PageResult<>();
+        PageInfo pageInfo = dto.getPageInfo();
+        pageResult.setPageNo(pageInfo.getPageNo());
+        pageResult.setPageSize(pageInfo.getPageSize());
+        int start = (pageInfo.getPageNo() - 1) * pageInfo.getPageSize();
+        Integer count = practiceSetDao.getListCount(dto);
+        if (count == 0) {
+            return pageResult;
+        }
+        List<PracticeSetPO> setPOList = practiceSetDao.getSetList(dto, start, dto.getPageInfo().getPageSize());
+        if (log.isInfoEnabled()) {
+            log.info("获取的模拟考卷列表{}", JSON.toJSONString(setPOList));
+        }
+        List<PracticeSetVO> list = new LinkedList<>();
+        setPOList.forEach(e -> {
+            PracticeSetVO vo = new PracticeSetVO();
+            vo.setSetId(e.getId());
+            vo.setSetName(e.getSetName());
+            vo.setSetHeat(e.getSetHeat());
+            vo.setSetDesc(e.getSetDesc());
+            list.add(vo);
+        });
+        pageResult.setRecords(list);
+        pageResult.setTotal(count);
+        return pageResult;
     }
 
 }

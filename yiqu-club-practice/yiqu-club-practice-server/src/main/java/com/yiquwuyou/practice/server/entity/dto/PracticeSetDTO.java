@@ -45,5 +45,4 @@ public class PracticeSetDTO implements Serializable {
     private PageInfo pageInfo;
 
 
-
 }
