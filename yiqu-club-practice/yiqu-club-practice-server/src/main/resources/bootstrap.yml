@@ -1,6 +1,6 @@
 spring:
   application:
-    name: yiqu-club-practice-dev
+    name: yiqu-club-practice
   profiles:
     active: dev
   cloud:

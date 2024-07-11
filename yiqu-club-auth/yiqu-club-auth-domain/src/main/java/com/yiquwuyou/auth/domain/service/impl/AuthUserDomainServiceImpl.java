@@ -75,6 +75,9 @@ public class AuthUserDomainServiceImpl implements AuthUserDomainService {
         if (StringUtils.isBlank(authUser.getAvatar())) {
             authUser.setAvatar("https://tse1-mm.cn.bing.net/th/id/OIP-C.1SJSAzXx_ijZEYZS84rzEAAAAA?rs=1&pid=ImgDetMain");
         }
+        if (StringUtils.isBlank(authUser.getNickName())) {
+            authUser.setNickName("基尼太美");
+        }
         authUser.setStatus(AuthUserStatusEnum.OPEN.getCode());
         authUser.setIsDeleted(IsDeletedFlagEnum.UN_DELETED.getCode());
         Integer count = authUserService.insert(authUser);
