@@ -1,9 +1,7 @@
 package com.yiquwuyou.practice.server.service;
 
-import com.yiquwuyou.practice.api.req.GetScoreDetailReq;
-import com.yiquwuyou.practice.api.req.GetSubjectDetailReq;
-import com.yiquwuyou.practice.api.req.SubmitPracticeDetailReq;
-import com.yiquwuyou.practice.api.req.SubmitSubjectDetailReq;
+import com.yiquwuyou.practice.api.req.*;
+import com.yiquwuyou.practice.api.vo.ReportVO;
 import com.yiquwuyou.practice.api.vo.ScoreDetailVO;
 import com.yiquwuyou.practice.api.vo.SubjectDetailVO;
 
@@ -30,6 +28,11 @@ public interface PracticeDetailService {
      * 获得答案详情
      */
     SubjectDetailVO getSubjectDetail(GetSubjectDetailReq req);
+
+    /**
+     * 答案解析-评估报告
+     */
+    ReportVO getReport(GetReportReq req);
 
 
 }
