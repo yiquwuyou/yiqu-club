@@ -4,14 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.base.Preconditions;
 import com.yiquwuyou.practice.api.common.PageResult;
 import com.yiquwuyou.practice.api.common.Result;
-import com.yiquwuyou.practice.api.req.GetPracticeSubjectListReq;
-import com.yiquwuyou.practice.api.req.GetPracticeSubjectReq;
-import com.yiquwuyou.practice.api.req.GetPracticeSubjectsReq;
-import com.yiquwuyou.practice.api.req.GetPreSetReq;
-import com.yiquwuyou.practice.api.vo.PracticeSetVO;
-import com.yiquwuyou.practice.api.vo.PracticeSubjectListVO;
-import com.yiquwuyou.practice.api.vo.PracticeSubjectVO;
-import com.yiquwuyou.practice.api.vo.SpecialPracticeVO;
+import com.yiquwuyou.practice.api.req.*;
+import com.yiquwuyou.practice.api.vo.*;
 import com.yiquwuyou.practice.server.entity.dto.PracticeSetDTO;
 import com.yiquwuyou.practice.server.entity.dto.PracticeSubjectDTO;
 import com.yiquwuyou.practice.server.service.PracticeSetService;
@@ -168,6 +162,27 @@ public class PracticeSetController {
         } catch (Exception e) {
             log.error("获取模拟套题内容异常！错误原因{}", e.getMessage(), e);
             return Result.fail("获取模拟套题内容异常！");
+        }
+    }
+
+    /**
+     * 获取未完成的练题内容
+     */
+    @PostMapping(value = "/getUnCompletePractice")
+    public Result<PageResult<UnCompletePracticeSetVO>> getUnCompletePractice(@RequestBody GetUnCompletePracticeReq req) {
+        try {
+            Preconditions.checkArgument(!Objects.isNull(req), "参数不能为空！");
+            PageResult<UnCompletePracticeSetVO> list = practiceSetService.getUnCompletePractice(req);
+            if (log.isInfoEnabled()) {
+                log.info("获取未完成练习内容出参{}", JSON.toJSONString(list));
+            }
+            return Result.ok(list);
+        } catch (IllegalArgumentException e) {
+            log.error("参数异常！错误原因{}", e.getMessage(), e);
+            return Result.fail(e.getMessage());
+        } catch (Exception e) {
+            log.error("获取未完成练习内容异常！错误原因{}", e.getMessage(), e);
+            return Result.fail("获取未完成练习内容异常！");
         }
     }
 }

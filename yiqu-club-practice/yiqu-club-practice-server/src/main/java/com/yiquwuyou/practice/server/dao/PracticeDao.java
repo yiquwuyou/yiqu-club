@@ -1,6 +1,9 @@
 package com.yiquwuyou.practice.server.dao;
 
 import com.yiquwuyou.practice.server.entity.po.PracticePO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface PracticeDao {
 
@@ -23,5 +26,18 @@ public interface PracticeDao {
      * 删除练习
      */
     int deleteById(Long id);
+
+    /**
+     * 查询未完成的练习题数量
+     */
+    Integer getUnCompleteCount(String loginId);
+
+    /**
+     * 查询未完成的练习题
+     */
+    List<PracticePO> getUnCompleteList(@Param("loginId") String loginId,
+                                       @Param("limit") int limit,
+                                       @Param("offset") int pageSize);
+
 
 }
