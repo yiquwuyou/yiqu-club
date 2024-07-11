@@ -4,27 +4,26 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.common.utils.CollectionUtils;
 import com.yiquwuyou.practice.api.enums.CompleteStatusEnum;
 import com.yiquwuyou.practice.api.enums.IsDeletedFlagEnum;
+import com.yiquwuyou.practice.api.enums.SubjectInfoTypeEnum;
 import com.yiquwuyou.practice.api.req.SubmitPracticeDetailReq;
-import com.yiquwuyou.practice.server.dao.PracticeDao;
-import com.yiquwuyou.practice.server.dao.PracticeDetailDao;
-import com.yiquwuyou.practice.server.dao.PracticeSetDao;
-import com.yiquwuyou.practice.server.dao.PracticeSetDetailDao;
-import com.yiquwuyou.practice.server.entity.po.PracticeDetailPO;
-import com.yiquwuyou.practice.server.entity.po.PracticePO;
-import com.yiquwuyou.practice.server.entity.po.PracticeSetDetailPO;
+import com.yiquwuyou.practice.api.req.SubmitSubjectDetailReq;
+import com.yiquwuyou.practice.server.dao.*;
+import com.yiquwuyou.practice.server.entity.dto.SubjectDTO;
+import com.yiquwuyou.practice.server.entity.dto.SubjectDetailDTO;
+import com.yiquwuyou.practice.server.entity.dto.SubjectOptionDTO;
+import com.yiquwuyou.practice.server.entity.po.*;
 import com.yiquwuyou.practice.server.service.PracticeDetailService;
 import com.yiquwuyou.practice.server.util.DateUtils;
 import com.yiquwuyou.practice.server.util.LoginUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +41,18 @@ public class PracticeDetailServiceImpl implements PracticeDetailService {
 
     @Resource
     private PracticeDao practiceDao;
+
+    @Resource
+    private SubjectDao subjectDao;
+
+    @Resource
+    private SubjectRadioDao subjectRadioDao;
+
+    @Resource
+    private SubjectMultipleDao subjectMultipleDao;
+
+    @Resource
+    private SubjectJudgeDao subjectJudgeDao;
 
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
@@ -107,6 +118,113 @@ public class PracticeDetailServiceImpl implements PracticeDetailService {
             });
         }
         return true;
+    }
+
+    /**
+     * 提交题目
+     * @param req
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean submitSubject(SubmitSubjectDetailReq req) {
+        String timeUse = req.getTimeUse();
+        if (timeUse.equals("0")) {
+            timeUse = "000000";
+        }
+        String hour = timeUse.substring(0, 2);
+        String minute = timeUse.substring(2, 4);
+        String second = timeUse.substring(4, 6);
+        PracticePO practicePO = new PracticePO();
+        practicePO.setId(req.getPracticeId());
+        practicePO.setTimeUse(hour + ":" + minute + ":" + second);
+        practicePO.setSubmitTime(new Date());
+        practiceDao.update(practicePO);
+
+        PracticeDetailPO practiceDetailPO = new PracticeDetailPO();
+        practiceDetailPO.setPracticeId(req.getPracticeId());
+        practiceDetailPO.setSubjectId(req.getSubjectId());
+        practiceDetailPO.setSubjectType(req.getSubjectType());
+        String answerContent = "";
+        //排序答案
+        if (CollectionUtils.isNotEmpty(req.getAnswerContents())) {
+            List<Integer> answerContents = req.getAnswerContents();
+            Collections.sort(answerContents);
+            answerContent = StringUtils.join(answerContents, ",");
+        }
+        practiceDetailPO.setAnswerContent(answerContent);
+        SubjectDTO subjectDTO = new SubjectDTO();
+        subjectDTO.setSubjectId(req.getSubjectId());
+        subjectDTO.setSubjectType(req.getSubjectType());
+        //获取正确答案，并判断答案是否正确
+        SubjectDetailDTO subjectDetail = getSubjectDetail(subjectDTO);
+        StringBuffer correctAnswer = new StringBuffer();
+        if (req.getSubjectType().equals(SubjectInfoTypeEnum.JUDGE.getCode())) {
+            Integer isCorrect = subjectDetail.getIsCorrect();
+            correctAnswer.append(isCorrect);
+        } else {
+            subjectDetail.getOptionList().forEach(e -> {
+                if (Objects.equals(e.getIsCorrect(), 1)) {
+                    correctAnswer.append(e.getOptionType()).append(",");
+                }
+            });
+            if (correctAnswer.length() > 0) {
+                correctAnswer.deleteCharAt(correctAnswer.length() - 1);
+            }
+        }
+        if (Objects.equals(correctAnswer.toString(), answerContent)) {
+            practiceDetailPO.setAnswerStatus(1);
+        } else {
+            practiceDetailPO.setAnswerStatus(0);
+        }
+        practiceDetailPO.setIsDeleted(IsDeletedFlagEnum.UN_DELETED.getCode());
+        practiceDetailPO.setCreatedBy(LoginUtil.getLoginId());
+        practiceDetailPO.setCreatedTime(new Date());
+        PracticeDetailPO existDetail = practiceDetailDao.selectDetail(req.getPracticeId(), req.getSubjectId(), LoginUtil.getLoginId());
+        if (Objects.isNull(existDetail)) {
+            practiceDetailDao.insertSingle(practiceDetailPO);
+        } else {
+            practiceDetailPO.setId(existDetail.getId());
+            practiceDetailDao.update(practiceDetailPO);
+        }
+        return true;
+    }
+
+
+    public SubjectDetailDTO getSubjectDetail(SubjectDTO dto) {
+        SubjectDetailDTO subjectDetailDTO = new SubjectDetailDTO();
+        SubjectPO subjectPO = subjectDao.selectById(dto.getSubjectId());
+        if (dto.getSubjectType() == SubjectInfoTypeEnum.RADIO.getCode()) {
+            List<SubjectOptionDTO> optionList = new LinkedList<>();
+            List<SubjectRadioPO> radioSubjectPOS = subjectRadioDao.selectBySubjectId(subjectPO.getId());
+            radioSubjectPOS.forEach(e -> {
+                SubjectOptionDTO subjectOptionDTO = new SubjectOptionDTO();
+                subjectOptionDTO.setOptionContent(e.getOptionContent());
+                subjectOptionDTO.setOptionType(e.getOptionType());
+                subjectOptionDTO.setIsCorrect(e.getIsCorrect());
+                optionList.add(subjectOptionDTO);
+            });
+            subjectDetailDTO.setOptionList(optionList);
+        }
+        if (dto.getSubjectType() == SubjectInfoTypeEnum.MULTIPLE.getCode()) {
+            List<SubjectOptionDTO> optionList = new LinkedList<>();
+            List<SubjectMultiplePO> multipleSubjectPOS = subjectMultipleDao.selectBySubjectId(subjectPO.getId());
+            multipleSubjectPOS.forEach(e -> {
+                SubjectOptionDTO subjectOptionDTO = new SubjectOptionDTO();
+                subjectOptionDTO.setOptionContent(e.getOptionContent());
+                subjectOptionDTO.setOptionType(e.getOptionType());
+                subjectOptionDTO.setIsCorrect(e.getIsCorrect());
+                optionList.add(subjectOptionDTO);
+            });
+            subjectDetailDTO.setOptionList(optionList);
+        }
+        if (dto.getSubjectType() == SubjectInfoTypeEnum.JUDGE.getCode()) {
+            SubjectJudgePO judgeSubjectPO = subjectJudgeDao.selectBySubjectId(subjectPO.getId());
+            subjectDetailDTO.setIsCorrect(judgeSubjectPO.getIsCorrect());
+        }
+        subjectDetailDTO.setSubjectParse(subjectPO.getSubjectParse());
+        subjectDetailDTO.setSubjectName(subjectPO.getSubjectName());
+        return subjectDetailDTO;
     }
 
 }

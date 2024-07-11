@@ -45,5 +45,18 @@
           and created_by = #{loginId}
     </select>
 
+    <update id="update">
+        update practice_detail
+        <set>
+            <if test="answerStatus != null">
+                answer_status = #{answerStatus},
+            </if>
+            <if test="answerContent != null">
+                answer_content = #{answerContent},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
 
 </mapper>
