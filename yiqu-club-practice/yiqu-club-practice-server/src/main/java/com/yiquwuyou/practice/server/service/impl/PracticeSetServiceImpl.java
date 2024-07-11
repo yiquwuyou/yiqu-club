@@ -1,5 +1,6 @@
 package com.yiquwuyou.practice.server.service.impl;
 
+import com.yiquwuyou.practice.api.enums.CompleteStatusEnum;
 import com.yiquwuyou.practice.api.enums.IsDeletedFlagEnum;
 import com.yiquwuyou.practice.api.enums.SubjectInfoTypeEnum;
 import com.yiquwuyou.practice.api.req.GetPracticeSubjectsReq;
@@ -11,11 +12,13 @@ import com.yiquwuyou.practice.server.entity.po.*;
 import com.yiquwuyou.practice.server.service.PracticeSetService;
 import com.yiquwuyou.practice.server.util.LoginUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -51,6 +54,12 @@ public class PracticeSetServiceImpl implements PracticeSetService {
 
     @Resource
     private SubjectMultipleDao subjectMultipleDao;
+
+    @Resource
+    private PracticeDetailDao practiceDetailDao;
+
+    @Resource
+    private PracticeDao practiceDao;
 
     /**
      * 获取专项练习内容
@@ -201,6 +210,11 @@ public class PracticeSetServiceImpl implements PracticeSetService {
         return setVO;
     }
 
+    /**
+     * 获取练习题目（非详情）
+     * @param req
+     * @return
+     */
     @Override
     public PracticeSubjectListVO getSubjects(GetPracticeSubjectsReq req) {
         Long setId = req.getSetId();
@@ -210,16 +224,56 @@ public class PracticeSetServiceImpl implements PracticeSetService {
         if (CollectionUtils.isEmpty(practiceSetDetailPOS)) {
             return vo;
         }
+        String loginId = LoginUtil.getLoginId();
+        Long practiceId = req.getPracticeId();
         practiceSetDetailPOS.forEach(e -> {
             PracticeSubjectDetailVO practiceSubjectListVO = new PracticeSubjectDetailVO();
             practiceSubjectListVO.setSubjectId(e.getSubjectId());
             practiceSubjectListVO.setSubjectType(e.getSubjectType());
+            if (Objects.nonNull(practiceId)) {
+                PracticeDetailPO practiceDetailPO = practiceDetailDao.selectDetail(practiceId, e.getSubjectId(), loginId);
+                if (Objects.nonNull(practiceDetailPO) && StringUtils.isNotBlank(practiceDetailPO.getAnswerContent())) {
+                    practiceSubjectListVO.setIsAnswer(1);
+                } else {
+                    practiceSubjectListVO.setIsAnswer(0);
+                }
+            }
             practiceSubjectListVOS.add(practiceSubjectListVO);
         });
         vo.setSubjectList(practiceSubjectListVOS);
         PracticeSetPO practiceSetPO = practiceSetDao.selectById(setId);
         vo.setTitle(practiceSetPO.getSetName());
+        if (Objects.isNull(practiceId)) {
+            Long newPracticeId = insertUnCompletePractice(setId);
+            vo.setPracticeId(newPracticeId);
+        } else {
+            updateUnCompletePractice(practiceId);
+            PracticePO practicePO = practiceDao.selectById(practiceId);
+            vo.setTimeUse(practicePO.getTimeUse());
+            vo.setPracticeId(practiceId);
+        }
         return vo;
+    }
+
+    private Long insertUnCompletePractice(Long practiceSetId) {
+        PracticePO practicePO = new PracticePO();
+        practicePO.setSetId(practiceSetId);
+        practicePO.setCompleteStatus(CompleteStatusEnum.NO_COMPLETE.getCode());
+        practicePO.setTimeUse("00:00:00");
+        practicePO.setSubmitTime(new Date());
+        practicePO.setCorrectRate(new BigDecimal("0.00"));
+        practicePO.setIsDeleted(IsDeletedFlagEnum.UN_DELETED.getCode());
+        practicePO.setCreatedBy(LoginUtil.getLoginId());
+        practicePO.setCreatedTime(new Date());
+        practiceDao.insert(practicePO);
+        return practicePO.getId();
+    }
+
+    private void updateUnCompletePractice(Long practiceId) {
+        PracticePO practicePO = new PracticePO();
+        practicePO.setId(practiceId);
+        practicePO.setSubmitTime(new Date());
+        practiceDao.update(practicePO);
     }
 
     /**
