@@ -1,6 +1,7 @@
 package com.yiquwuyou.practice.server.service;
 
 import com.yiquwuyou.practice.api.req.*;
+import com.yiquwuyou.practice.api.vo.RankVO;
 import com.yiquwuyou.practice.api.vo.ReportVO;
 import com.yiquwuyou.practice.api.vo.ScoreDetailVO;
 import com.yiquwuyou.practice.api.vo.SubjectDetailVO;
@@ -33,6 +34,11 @@ public interface PracticeDetailService {
      * 答案解析-评估报告
      */
     ReportVO getReport(GetReportReq req);
+
+    /**
+     * 练习榜
+     */
+    List<RankVO> getPracticeRankList();
 
 
 }
