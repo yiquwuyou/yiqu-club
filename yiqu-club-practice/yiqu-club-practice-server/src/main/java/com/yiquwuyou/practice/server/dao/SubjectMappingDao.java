@@ -1,6 +1,7 @@
 package com.yiquwuyou.practice.server.dao;
 
 import com.yiquwuyou.practice.server.entity.po.LabelCountPO;
+import com.yiquwuyou.practice.server.entity.po.SubjectMappingPO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -16,5 +17,7 @@ public interface SubjectMappingDao {
     List<LabelCountPO> getLabelSubjectCount(@Param("categoryId") Long categoryId,
                                             @Param("subjectTypeList") List<Integer> subjectTypeList);
 
+
+    List<SubjectMappingPO> getLabelIdsBySubjectId(Long subjectId);
 }
 
