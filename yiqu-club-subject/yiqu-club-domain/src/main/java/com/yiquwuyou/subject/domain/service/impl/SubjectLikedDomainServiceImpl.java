@@ -37,14 +37,18 @@ public class SubjectLikedDomainServiceImpl implements SubjectLikedDomainService 
     @Resource
     private RedisUtil redisUtil;
 
+    // 存储点赞状态的哈希键名，哈希键类似于存放了很多键值对的表
     private static final String SUBJECT_LIKED_KEY = "subject.liked";
 
+    // 存储点赞数的键名
     private static final String SUBJECT_LIKED_COUNT_KEY = "subject.liked.count";
 
+    // 存储点赞详情的键名
     private static final String SUBJECT_LIKED_DETAIL_KEY = "subject.liked.detail";
 
     @Override
     public void add(SubjectLikedBO subjectLikedBO) {
+        // 将点赞状态存入redis -> 要修改三处地方
         Long subjectId = subjectLikedBO.getSubjectId();
         String likeUserId = subjectLikedBO.getLikeUserId();
         Integer status = subjectLikedBO.getStatus();
