@@ -15,6 +15,7 @@ import com.yiquwuyou.subject.infra.basic.entity.SubjectInfoEs;
 import com.yiquwuyou.subject.infra.basic.service.SubjectCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +35,9 @@ public class SubjectController {
 
     @Resource
     private SubjectInfoDomainService subjectInfoDomainService;
+
+    @Resource
+    private RocketMQTemplate rocketMQTemplate;
 
     /**
      * 新增题目
@@ -141,5 +145,11 @@ public class SubjectController {
         }
     }
 
+    @RequestMapping("/pushMessage")
+    public Result<Boolean> get(@RequestParam("id") int id) {
+        rocketMQTemplate.convertAndSend("first-topic","你好,Java旅途" + id);
+        return Result.ok(true);
+    }
 
 }
+

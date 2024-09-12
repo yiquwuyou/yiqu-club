@@ -83,3 +83,8 @@ xxl:
 #mybatis-plus:
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+rocketmq:
+  name-server: 192.168.17.128:9876
+  producer:
+    group: test-group
