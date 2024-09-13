@@ -3,6 +3,7 @@ package com.yiquwuyou.circle.server.entity.po;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.yiquwuyou.circle.api.common.TreeNode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +21,7 @@ import java.util.Date;
 @Getter
 @Setter
 @TableName("share_comment_reply")
-public class ShareCommentReply implements Serializable {
+public class ShareCommentReply extends TreeNode implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,7 +34,7 @@ public class ShareCommentReply implements Serializable {
     /**
      * 原始动态ID
      */
-    private Integer momentId;
+    private Long momentId;
 
     /**
      * 回复类型 1评论 2回复
@@ -104,4 +105,17 @@ public class ShareCommentReply implements Serializable {
      * 是否被删除 0为删除 1已删除
      */
     private Integer isDeleted;
+
+    private Long parentId;
+
+    @Override
+    public Long getNodeId() {
+        return id;
+    }
+
+    @Override
+    public Long getNodePId() {
+        return parentId;
+    }
+
 }

@@ -2,6 +2,7 @@ package com.yiquwuyou.circle.server.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yiquwuyou.circle.server.entity.po.ShareMoment;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -12,5 +13,7 @@ import com.yiquwuyou.circle.server.entity.po.ShareMoment;
  * @since 2024/05/16
  */
 public interface ShareMomentMapper extends BaseMapper<ShareMoment> {
+
+    void incrReplyCount(@Param("id") Long id, @Param("count") int count);
 
 }

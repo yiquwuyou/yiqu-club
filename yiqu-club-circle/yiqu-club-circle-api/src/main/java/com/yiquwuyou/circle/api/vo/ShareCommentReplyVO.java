@@ -1,5 +1,6 @@
-package com.yiquwuyou.circle.api.req;
+package com.yiquwuyou.circle.api.vo;
 
+import com.yiquwuyou.circle.api.common.TreeNode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,9 +17,11 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class SaveShareCommentReplyReq implements Serializable {
+public class ShareCommentReplyVO extends TreeNode implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    private Long id;
 
     /**
      * 原始动态ID
@@ -31,11 +34,6 @@ public class SaveShareCommentReplyReq implements Serializable {
     private Integer replyType;
 
     /**
-     * 评论目标id 评论则是动态ID 回复则是评论内容ID
-     */
-    private Long targetId;
-
-    /**
      * 内容
      */
     private String content;
@@ -44,5 +42,21 @@ public class SaveShareCommentReplyReq implements Serializable {
      * 图片内容
      */
     private List<String> picUrlList;
+
+    private String fromId;
+
+    private String toId;
+
+    private Long parentId;
+
+    @Override
+    public Long getNodeId() {
+        return id;
+    }
+
+    @Override
+    public Long getNodePId() {
+        return parentId;
+    }
 
 }
