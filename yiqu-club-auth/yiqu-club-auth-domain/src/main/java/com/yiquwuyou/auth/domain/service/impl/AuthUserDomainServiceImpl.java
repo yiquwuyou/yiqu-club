@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -162,4 +163,14 @@ public class AuthUserDomainServiceImpl implements AuthUserDomainService {
         AuthUser user = userList.get(0);
         return AuthUserBOConverter.INSTANCE.convertEntityToBO(user);
     }
+
+    @Override
+    public List<AuthUserBO> listUserInfoByIds(List<String> userNameList) {
+        List<AuthUser> userList = authUserService.listUserInfoByIds(userNameList);
+        if (CollectionUtils.isEmpty(userList)) {
+            return Collections.emptyList();
+        }
+        return AuthUserBOConverter.INSTANCE.convertEntityToBO(userList);
+    }
+
 }

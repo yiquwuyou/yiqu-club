@@ -16,8 +16,10 @@ import com.yiquwuyou.circle.api.req.SaveMomentCircleReq;
 import com.yiquwuyou.circle.api.vo.ShareMomentVO;
 import com.yiquwuyou.circle.server.dao.ShareCommentReplyMapper;
 import com.yiquwuyou.circle.server.dao.ShareMomentMapper;
+import com.yiquwuyou.circle.server.entity.dto.UserInfo;
 import com.yiquwuyou.circle.server.entity.po.ShareCommentReply;
 import com.yiquwuyou.circle.server.entity.po.ShareMoment;
+import com.yiquwuyou.circle.server.rpc.UserRpc;
 import com.yiquwuyou.circle.server.service.ShareMomentService;
 import com.yiquwuyou.circle.server.util.LoginUtil;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -43,6 +46,8 @@ public class ShareMomentServiceImpl extends ServiceImpl<ShareMomentMapper, Share
 
     @Resource
     private ShareCommentReplyMapper shareCommentReplyMapper;
+    @Resource
+    private UserRpc userRpc;
 
     @Override
     public Boolean saveMoment(SaveMomentCircleReq req) {
@@ -73,6 +78,9 @@ public class ShareMomentServiceImpl extends ServiceImpl<ShareMomentMapper, Share
         Page<ShareMoment> pageRes = super.page(page, query);
         PageResult<ShareMomentVO> result = new PageResult<>();
         List<ShareMoment> records = pageRes.getRecords();
+        List<String> userNameList = records.stream().map(ShareMoment::getCreatedBy).distinct().collect(Collectors.toList());
+        Map<String, UserInfo> userInfoMap = userRpc.batchGetUserInfo(userNameList);
+        UserInfo defaultUser = new UserInfo();
         List<ShareMomentVO> list = records.stream().map(item -> {
             ShareMomentVO vo = new ShareMomentVO();
             vo.setId(item.getId());
@@ -84,6 +92,9 @@ public class ShareMomentServiceImpl extends ServiceImpl<ShareMomentMapper, Share
             }
             vo.setReplyCount(item.getReplyCount());
             vo.setCreatedTime(item.getCreatedTime().getTime());
+            UserInfo user = userInfoMap.getOrDefault(item.getCreatedBy(), defaultUser);
+            vo.setUserName(user.getNickName());
+            vo.setUserAvatar(user.getAvatar());
             return vo;
         }).collect(Collectors.toList());
         result.setRecords(list);

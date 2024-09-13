@@ -48,4 +48,6 @@ public interface AuthUserService {
      * 根据条件查询数量
      */
     List<AuthUser> queryByCondition(AuthUser authUser);
+
+    List<AuthUser> listUserInfoByIds(List<String> ids);
 }

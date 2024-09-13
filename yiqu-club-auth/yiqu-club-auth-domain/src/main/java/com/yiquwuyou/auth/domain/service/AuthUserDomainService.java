@@ -4,9 +4,11 @@ package com.yiquwuyou.auth.domain.service;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import com.yiquwuyou.auth.domain.entity.AuthUserBO;
 
+import java.util.List;
+
 /**
  * 用户领域service
- * 
+ *
  * @author: yiquwuyou
  * @date: 2023/11/1
  */
@@ -30,4 +32,6 @@ public interface AuthUserDomainService {
     SaTokenInfo doLogin(String validCode);
 
     AuthUserBO getUserInfo(AuthUserBO authUserBO);
+
+    List<AuthUserBO> listUserInfoByIds(List<String> ids);
 }
