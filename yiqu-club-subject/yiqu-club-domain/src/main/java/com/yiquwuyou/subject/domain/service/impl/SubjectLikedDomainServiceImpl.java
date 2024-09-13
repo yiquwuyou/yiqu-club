@@ -7,12 +7,14 @@ import com.yiquwuyou.subject.common.enums.SubjectLikedStatusEnum;
 import com.yiquwuyou.subject.common.util.LoginUtil;
 import com.yiquwuyou.subject.domain.convert.SubjectLikedBOConverter;
 import com.yiquwuyou.subject.domain.entity.SubjectLikedBO;
+import com.yiquwuyou.subject.domain.entity.SubjectLikedMessage;
 import com.yiquwuyou.subject.domain.redis.RedisUtil;
 import com.yiquwuyou.subject.domain.service.SubjectLikedDomainService;
 import com.yiquwuyou.subject.infra.basic.entity.SubjectLiked;
 import com.yiquwuyou.subject.infra.basic.service.SubjectLikedService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,6 +37,9 @@ public class SubjectLikedDomainServiceImpl implements SubjectLikedDomainService 
     private SubjectLikedService subjectLikedService;
 
     @Resource
+    private RocketMQTemplate rocketMQTemplate;
+
+    @Resource
     private RedisUtil redisUtil;
 
     // 存储点赞状态的哈希键名，哈希键类似于存放了很多键值对的表
@@ -52,8 +57,16 @@ public class SubjectLikedDomainServiceImpl implements SubjectLikedDomainService 
         Long subjectId = subjectLikedBO.getSubjectId();
         String likeUserId = subjectLikedBO.getLikeUserId();
         Integer status = subjectLikedBO.getStatus();
-        String hashKey = buildSubjectLikedKey(subjectId.toString(), likeUserId);
-        redisUtil.putHash(SUBJECT_LIKED_KEY, hashKey, status);
+//        String hashKey = buildSubjectLikedKey(subjectId.toString(), likeUserId);
+//        redisUtil.putHash(SUBJECT_LIKED_KEY, hashKey, status);
+
+        // 通过消息队列同步点赞数据
+        SubjectLikedMessage subjectLikedMessage = new SubjectLikedMessage();
+        subjectLikedMessage.setSubjectId(subjectId);
+        subjectLikedMessage.setLikeUserId(likeUserId);
+        subjectLikedMessage.setStatus(status);
+        rocketMQTemplate.convertAndSend("subject-liked", JSON.toJSONString(subjectLikedMessage));
+
         String detailKey = SUBJECT_LIKED_DETAIL_KEY + "." + subjectId + "." + likeUserId;
         String countKey = SUBJECT_LIKED_COUNT_KEY + "." + subjectId;
         if (SubjectLikedStatusEnum.LIKED.getCode() == status) {
@@ -153,5 +166,18 @@ public class SubjectLikedDomainServiceImpl implements SubjectLikedDomainService 
         pageResult.setRecords(subjectInfoBOS);
         pageResult.setTotal(count);
         return pageResult;
+    }
+
+    // 通过消息队列同步点赞数据
+    @Override
+    public void syncLikedByMsg(SubjectLikedBO subjectLikedBO) {
+        List<SubjectLiked> subjectLikedList = new LinkedList<>();
+        SubjectLiked subjectLiked = new SubjectLiked();
+        subjectLiked.setSubjectId(Long.valueOf(subjectLikedBO.getSubjectId()));
+        subjectLiked.setLikeUserId(subjectLikedBO.getLikeUserId());
+        subjectLiked.setStatus(subjectLikedBO.getStatus());
+        subjectLiked.setIsDeleted(IsDeletedFlagEnum.UN_DELETED.getCode());
+        subjectLikedList.add(subjectLiked);
+        subjectLikedService.batchInsertOrUpdate(subjectLikedList);
     }
 }
