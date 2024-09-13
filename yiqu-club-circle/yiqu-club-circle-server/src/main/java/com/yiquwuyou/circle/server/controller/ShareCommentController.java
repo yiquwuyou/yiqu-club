@@ -1,6 +1,8 @@
 package com.yiquwuyou.circle.server.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.base.Preconditions;
 import com.yiquwuyou.circle.api.common.Result;
 import com.yiquwuyou.circle.api.enums.IsDeletedFlagEnum;
@@ -8,10 +10,13 @@ import com.yiquwuyou.circle.api.req.GetShareCommentReq;
 import com.yiquwuyou.circle.api.req.RemoveShareCommentReq;
 import com.yiquwuyou.circle.api.req.SaveShareCommentReplyReq;
 import com.yiquwuyou.circle.api.vo.ShareCommentReplyVO;
+import com.yiquwuyou.circle.server.entity.po.ShareCommentReply;
 import com.yiquwuyou.circle.server.entity.po.ShareMoment;
 import com.yiquwuyou.circle.server.sensitive.WordFilter;
 import com.yiquwuyou.circle.server.service.ShareCommentReplyService;
+import com.yiquwuyou.circle.server.service.ShareMessageService;
 import com.yiquwuyou.circle.server.service.ShareMomentService;
+import com.yiquwuyou.circle.server.util.LoginUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +37,7 @@ import java.util.Objects;
  */
 @Slf4j
 @RestController
-@RequestMapping("/share/comment")
+@RequestMapping("/circle/share/comment")
 public class ShareCommentController {
 
     @Resource
@@ -41,7 +46,8 @@ public class ShareCommentController {
     private ShareCommentReplyService shareCommentReplyService;
     @Resource
     private WordFilter wordFilter;
-
+    @Resource
+    private ShareMessageService shareMessageService;
 
     /**
      * 发布内容
@@ -55,12 +61,20 @@ public class ShareCommentController {
             Preconditions.checkArgument(Objects.nonNull(req), "参数不能为空！");
             Preconditions.checkArgument(Objects.nonNull(req.getReplyType()), "类型不能为空！");
             Preconditions.checkArgument(Objects.nonNull(req.getMomentId()), "内容ID不能为空！");
-            Preconditions.checkArgument(Objects.nonNull(req.getTargetId()), "目标ID不能为空！");
             ShareMoment moment = shareMomentService.getById(req.getMomentId());
             Preconditions.checkArgument((Objects.nonNull(moment) && moment.getIsDeleted() != IsDeletedFlagEnum.DELETED.getCode()), "非法内容！");
             Preconditions.checkArgument((Objects.nonNull(req.getContent()) || Objects.nonNull(req.getPicUrlList())), "内容不能为空！");
             wordFilter.check(req.getContent());
             Boolean result = shareCommentReplyService.saveComment(req);
+            if (req.getReplyType() == 1) {
+                shareMessageService.comment(LoginUtil.getLoginId(), moment.getCreatedBy(), moment.getId());
+            } else {
+                LambdaQueryWrapper<ShareCommentReply> query = Wrappers.<ShareCommentReply>lambdaQuery()
+                        .eq(ShareCommentReply::getId, req.getTargetId())
+                        .select(ShareCommentReply::getCreatedBy);
+                ShareCommentReply reply = shareCommentReplyService.getOne(query);
+                shareMessageService.reply(LoginUtil.getLoginId(), reply.getCreatedBy(), moment.getId());
+            }
             if (log.isInfoEnabled()) {
                 log.info("发布内容{}", JSON.toJSONString(result));
             }

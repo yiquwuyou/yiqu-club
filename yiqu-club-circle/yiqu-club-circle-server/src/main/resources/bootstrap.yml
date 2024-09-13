@@ -1,6 +1,6 @@
 spring:
   application:
-    name: yiqu-club-circle-dev
+    name: yiqu-club-circle
   profiles:
     active: dev
   cloud:
