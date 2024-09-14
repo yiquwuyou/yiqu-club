@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="MavenProjectsManager">
@@ -14,6 +15,7 @@
         <option value="$PROJECT_DIR$/yiqu-club-common-starter/easy-gen-code-spring-boot-starter/pom.xml" />
         <option value="$PROJECT_DIR$/yiqu-club-practice/pom.xml" />
         <option value="$PROJECT_DIR$/yiqu-club-circle/pom.xml" />
+        <option value="$PROJECT_DIR$/yiqu-club-interview/pom.xml" />
       </list>
     </option>
   </component>

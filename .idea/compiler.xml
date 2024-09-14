@@ -16,6 +16,7 @@
         <module name="yiqu-club-common" />
         <module name="yiqu-club-practice-api" />
         <module name="yiqu-club-oss" />
+        <module name="jc-club-interview-server" />
         <module name="yiqu-club-gen" />
         <module name="yiqu-club-application-job" />
         <module name="yiqu-club-auth-application-mq" />
@@ -31,6 +32,7 @@
         <module name="yiqu-club-auth-application-job" />
         <module name="yiqu-club-circle-api" />
         <module name="yiqu-club-starter" />
+        <module name="jc-club-interview-api" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
