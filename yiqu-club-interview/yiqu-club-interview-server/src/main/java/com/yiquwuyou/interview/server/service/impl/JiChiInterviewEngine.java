@@ -1,9 +1,12 @@
 package com.yiquwuyou.interview.server.service.impl;
 
 import com.yiquwuyou.interview.api.enums.EngineEnum;
+import com.yiquwuyou.interview.api.req.StartReq;
+import com.yiquwuyou.interview.api.vo.InterviewQuestionVO;
 import com.yiquwuyou.interview.api.vo.InterviewVO;
 import com.yiquwuyou.interview.server.dao.SubjectDao;
 import com.yiquwuyou.interview.server.entity.po.SubjectCategory;
+import com.yiquwuyou.interview.server.entity.po.SubjectInfo;
 import com.yiquwuyou.interview.server.entity.po.SubjectLabel;
 import com.yiquwuyou.interview.server.service.InterviewEngine;
 import org.springframework.stereotype.Service;
@@ -59,6 +62,32 @@ public class JiChiInterviewEngine implements InterviewEngine {
         }).collect(Collectors.toList());
 
         InterviewVO vo = new InterviewVO();
+        vo.setQuestionList(views);
+        return vo;
+
+    }
+
+    @Override
+    public InterviewQuestionVO start(StartReq req) {
+
+        List<Long> ids = req.getQuestionList().stream().map(StartReq.Key::getLabelId).distinct().collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(ids)) {
+            return new InterviewQuestionVO();
+        }
+        List<SubjectInfo> subjectInfos = subjectDao.listSubjectByLabelIds(ids);
+        List<InterviewQuestionVO.Interview> views = subjectInfos.stream().map(item -> {
+            InterviewQuestionVO.Interview view = new InterviewQuestionVO.Interview();
+            view.setSubjectName(item.getSubjectName());
+            view.setSubjectAnswer(item.getSubjectAnswer());
+            view.setLabelName(item.getLabelName());
+            view.setKeyWord(String.format("%s-%s", item.getCategoryName(), item.getLabelName()));
+            return view;
+        }).collect(Collectors.toList());
+        if (views.size() > 8) {
+            Collections.shuffle(views);
+            views = views.subList(0, 8);
+        }
+        InterviewQuestionVO vo = new InterviewQuestionVO();
         vo.setQuestionList(views);
         return vo;
 
