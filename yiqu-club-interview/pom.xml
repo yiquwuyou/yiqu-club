@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.yiquwuyou</groupId>
-    <artifactId>jc-club-interview</artifactId>
+    <artifactId>yiqu-club-interview</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>jc-club-interview-api</module>
-        <module>jc-club-interview-server</module>
+        <module>yiqu-club-interview-api</module>
+        <module>yiqu-club-interview-server</module>
     </modules>
     <packaging>pom</packaging>
 

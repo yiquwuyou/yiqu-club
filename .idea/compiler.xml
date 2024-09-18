@@ -13,10 +13,10 @@
         <module name="yiqu-club-auth-api" />
         <module name="yiqu-club-auth-starter" />
         <module name="yiqu-club-infra" />
+        <module name="yiqu-club-interview-server" />
         <module name="yiqu-club-common" />
         <module name="yiqu-club-practice-api" />
         <module name="yiqu-club-oss" />
-        <module name="jc-club-interview-server" />
         <module name="yiqu-club-gen" />
         <module name="yiqu-club-application-job" />
         <module name="yiqu-club-auth-application-mq" />
@@ -32,12 +32,15 @@
         <module name="yiqu-club-auth-application-job" />
         <module name="yiqu-club-circle-api" />
         <module name="yiqu-club-starter" />
-        <module name="jc-club-interview-api" />
+        <module name="yiqu-club-interview-api" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
       <module name="jc-club-common-starter" target="1.8" />
       <module name="jc-club-gen" target="1.8" />
+      <module name="jc-club-interview" target="1.8" />
+      <module name="jc-club-interview-api" target="1.8" />
+      <module name="jc-club-interview-server" target="1.8" />
       <module name="jc-club-practice-api" target="1.8" />
       <module name="jc-club-practice-server" target="1.8" />
     </bytecodeTargetLevel>
