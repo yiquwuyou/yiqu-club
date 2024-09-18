@@ -2,8 +2,10 @@ package com.yiquwuyou.interview.server.service.impl;
 
 import com.google.common.base.Preconditions;
 import com.yiquwuyou.interview.api.req.InterviewReq;
+import com.yiquwuyou.interview.api.req.InterviewSubmitReq;
 import com.yiquwuyou.interview.api.req.StartReq;
 import com.yiquwuyou.interview.api.vo.InterviewQuestionVO;
+import com.yiquwuyou.interview.api.vo.InterviewResultVO;
 import com.yiquwuyou.interview.api.vo.InterviewVO;
 import com.yiquwuyou.interview.server.dao.SubjectDao;
 import com.yiquwuyou.interview.server.entity.po.SubjectLabel;
@@ -50,6 +52,14 @@ public class InterviewServiceImpl implements InterviewService, ApplicationContex
         InterviewEngine engine = engineMap.get(req.getEngine());
         Preconditions.checkArgument(!Objects.isNull(engine), "引擎不能为空！");
         return engine.start(req);
+    }
+
+
+    @Override
+    public InterviewResultVO submit(InterviewSubmitReq req) {
+        InterviewEngine engine = engineMap.get(req.getEngine());
+        Preconditions.checkArgument(!Objects.isNull(engine), "引擎不能为空！");
+        return engine.submit(req);
     }
 
     private List<String> buildKeyWords(String url) {
