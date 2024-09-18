@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yiquwuyou.interview.api.common.PageInfo;
 import com.yiquwuyou.interview.api.common.PageResult;
 import com.yiquwuyou.interview.api.enums.IsDeletedFlagEnum;
+import com.yiquwuyou.interview.api.req.InterviewHistoryReq;
 import com.yiquwuyou.interview.api.req.InterviewSubmitReq;
+import com.yiquwuyou.interview.api.vo.InterviewHistoryVO;
 import com.yiquwuyou.interview.api.vo.InterviewResultVO;
 import com.yiquwuyou.interview.server.dao.InterviewHistoryDao;
 import com.yiquwuyou.interview.server.dao.InterviewQuestionHistoryDao;
@@ -64,6 +66,35 @@ public class InterviewHistoryServiceImpl extends ServiceImpl<InterviewHistoryDao
             return questionHistory;
         }).collect(Collectors.toList());
         interviewQuestionHistoryDao.insertBatch(histories);
+
+    }
+
+    @Override
+    public PageResult<InterviewHistoryVO> getHistory(InterviewHistoryReq req) {
+
+        LambdaQueryWrapper<InterviewHistory> query = Wrappers.<InterviewHistory>lambdaQuery()
+                .eq(InterviewHistory::getCreatedBy, LoginUtil.getLoginId())
+                .eq(InterviewHistory::getIsDeleted, IsDeletedFlagEnum.UN_DELETED.getCode())
+                .orderByDesc(InterviewHistory::getId);
+        PageInfo pageInfo = req.getPageInfo();
+        Page<InterviewHistory> page = new Page<>(pageInfo.getPageNo(), pageInfo.getPageSize());
+        Page<InterviewHistory> pageRes = super.page(page, query);
+        PageResult<InterviewHistoryVO> result = new PageResult<>();
+        List<InterviewHistory> records = pageRes.getRecords();
+        List<InterviewHistoryVO> list = records.stream().map(item -> {
+            InterviewHistoryVO vo = new InterviewHistoryVO();
+            vo.setId(item.getId());
+            vo.setAvgScore(item.getAvgScore());
+            vo.setKeyWords(item.getKeyWords());
+            vo.setTip(item.getTip());
+            vo.setCreatedTime(item.getCreatedTime().getTime());
+            return vo;
+        }).collect(Collectors.toList());
+        result.setRecords(list);
+        result.setTotal((int) pageRes.getTotal());
+        result.setPageSize(pageInfo.getPageSize());
+        result.setPageNo(pageInfo.getPageNo());
+        return result;
 
     }
 

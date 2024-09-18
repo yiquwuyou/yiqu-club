@@ -3,18 +3,20 @@ package com.yiquwuyou.interview.server.controller;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Preconditions;
 import com.yiquwuyou.auth.entity.Result;
+import com.yiquwuyou.interview.api.common.PageResult;
+import com.yiquwuyou.interview.api.req.InterviewHistoryReq;
 import com.yiquwuyou.interview.api.req.InterviewReq;
 import com.yiquwuyou.interview.api.req.InterviewSubmitReq;
 import com.yiquwuyou.interview.api.req.StartReq;
-import com.yiquwuyou.interview.api.vo.InterviewQuestionVO;
-import com.yiquwuyou.interview.api.vo.InterviewResultVO;
-import com.yiquwuyou.interview.api.vo.InterviewVO;
+import com.yiquwuyou.interview.api.vo.*;
 import com.yiquwuyou.interview.server.service.InterviewHistoryService;
+import com.yiquwuyou.interview.server.service.InterviewQuestionHistoryService;
 import com.yiquwuyou.interview.server.service.InterviewService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -35,6 +37,9 @@ public class InterviewController {
 
     @Resource
     private InterviewHistoryService interviewHistoryService;
+
+    @Resource
+    private InterviewQuestionHistoryService interviewQuestionHistoryService;
 
     /**
      * 分析简历
@@ -101,5 +106,54 @@ public class InterviewController {
             return Result.fail("分析简历异常！");
         }
     }
+
+    /**
+     * 分页查询面试记录
+     */
+    @PostMapping(value = "/getHistory")
+    public Result<PageResult<InterviewHistoryVO>> getHistory(@RequestBody InterviewHistoryReq req) {
+        try {
+            if (log.isInfoEnabled()) {
+                log.info("分页查询面试记录入参{}", JSON.toJSONString(req));
+            }
+            Preconditions.checkArgument(!Objects.isNull(req), "参数不能为空！");
+            PageResult<InterviewHistoryVO> result = interviewHistoryService.getHistory(req);
+            if (log.isInfoEnabled()) {
+                log.info("分页查询面试记录出参{}", JSON.toJSONString(result));
+            }
+            return Result.ok(result);
+        } catch (IllegalArgumentException e) {
+            log.error("参数异常！错误原因{}", e.getMessage(), e);
+            return Result.fail(e.getMessage());
+        } catch (Exception e) {
+            log.error("分页查询面试记录异常！错误原因{}", e.getMessage(), e);
+            return Result.fail("分页查询面试记录异常！");
+        }
+    }
+
+    /**
+     * 查询详情
+     */
+    @GetMapping(value = "/detail")
+    public Result<List<InterviewQuestionHistoryVO>> detail(Long id) {
+        try {
+            if (log.isInfoEnabled()) {
+                log.info("查询详情入参{}", id);
+            }
+            Preconditions.checkArgument(!Objects.isNull(id), "参数不能为空！");
+            List<InterviewQuestionHistoryVO> result = interviewQuestionHistoryService.detail(id);
+            if (log.isInfoEnabled()) {
+                log.info("查询详情出参{}", JSON.toJSONString(result));
+            }
+            return Result.ok(result);
+        } catch (IllegalArgumentException e) {
+            log.error("参数异常！错误原因{}", e.getMessage(), e);
+            return Result.fail(e.getMessage());
+        } catch (Exception e) {
+            log.error("查询详情异常！错误原因{}", e.getMessage(), e);
+            return Result.fail("查询详情异常！");
+        }
+    }
+
 
 }
