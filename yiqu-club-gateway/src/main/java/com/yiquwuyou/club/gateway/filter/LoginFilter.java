@@ -1,5 +1,6 @@
 package com.yiquwuyou.club.gateway.filter;
 
+import cn.dev33.satoken.reactor.context.SaReactorSyncHolder;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.google.gson.Gson;
@@ -29,6 +30,8 @@ public class LoginFilter implements GlobalFilter {
     @Override
     @SneakyThrows
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        // 每次请求都set一下上下文
+        SaReactorSyncHolder.setContext(exchange);
         // 获取当前请求的ServerHttpRequest对象。
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
