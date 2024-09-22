@@ -106,8 +106,9 @@ public class SubjectCategoryDomainServiceImpl implements SubjectCategoryDomainSe
     public List<SubjectCategoryBO> queryCategoryAndLabel(SubjectCategoryBO subjectCategoryBO) {
         Long id = subjectCategoryBO.getId();
         String cacheKey = "categoryAndLabel." + subjectCategoryBO.getId();
-        List<SubjectCategoryBO> subjectCategoryBOS = cacheUtil.getResult(cacheKey,
-                SubjectCategoryBO.class, (key) -> getSubjectCategoryBOS(id));
+//        List<SubjectCategoryBO> subjectCategoryBOS = cacheUtil.getResult(cacheKey,
+//                SubjectCategoryBO.class, (key) -> getSubjectCategoryBOS(id));
+        List<SubjectCategoryBO> subjectCategoryBOS = getSubjectCategoryBOS(id);
         return subjectCategoryBOS;
     }
 
