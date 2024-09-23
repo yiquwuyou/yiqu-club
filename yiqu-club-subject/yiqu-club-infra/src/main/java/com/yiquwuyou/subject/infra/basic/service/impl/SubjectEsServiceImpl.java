@@ -227,12 +227,12 @@ public class SubjectEsServiceImpl implements SubjectEsService {
         // 将subjectAnswerQueryBuilder也添加到bq的should条件中
         bq.should(subjectAnswerQueryBuilder);
 
-        // 创建一个匹配查询构建器，用于在SubjectType字段中搜索特定类型（这里以BRIEF为例）
-        MatchQueryBuilder subjectTypeQueryBuilder =
-                QueryBuilders.matchQuery(EsSubjectFields.SUBJECT_TYPE, SubjectInfoTypeEnum.BRIEF.getCode());
-
-        // 将subjectTypeQueryBuilder添加到bq的must条件中，表示该条件为必须的
-        bq.must(subjectTypeQueryBuilder);
+//        // 创建一个匹配查询构建器，用于在SubjectType字段中搜索特定类型（这里以BRIEF为例）
+//        MatchQueryBuilder subjectTypeQueryBuilder =
+//                QueryBuilders.matchQuery(EsSubjectFields.SUBJECT_TYPE, SubjectInfoTypeEnum.BRIEF.getCode());
+//
+//        // 将subjectTypeQueryBuilder添加到bq的must条件中，表示该条件为必须的
+//        bq.must(subjectTypeQueryBuilder);
 
         // 设置bq的minimumShouldMatch为1，表示should条件中至少有一个必须匹配
         bq.minimumShouldMatch(1);
