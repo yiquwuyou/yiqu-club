@@ -6,7 +6,7 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: 192.168.17.128:8848
+        server-addr: 117.72.80.181:8848
         prefix: ${spring.application.name}
         group: DEFAULT_GROUP
         namespace:
@@ -14,4 +14,4 @@ spring:
       # 服务注册到 nacos 上
       discovery:
         enabled: true
-        server-addr: 192.168.17.128:8848
+        server-addr: 117.72.80.181:8848

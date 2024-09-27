@@ -40,6 +40,6 @@ public class DruidEncryptUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String encrypt1 = encrypt("123456");
+        String encrypt1 = encrypt("wangshiruyan88");
     }
 }

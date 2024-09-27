@@ -1,6 +1,12 @@
 server:
   port: 4000
 minio:
-  url: http://192.168.17.128:9000
+  url: http://117.72.80.181:9000
   accessKey: minioadmin
   secretKey: minioadmin
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
