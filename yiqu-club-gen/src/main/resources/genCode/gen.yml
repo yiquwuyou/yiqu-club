@@ -9,7 +9,7 @@
 jdbc:
   dbName: jc_club
   tableName: subject_liked
-  url: jdbc:mysql://117.72.80.181:3306/
+  url: jdbc:mysql://47.100.62.48:3306/
   username: root
   password: 123456
   driver: com.mysql.cj.jdbc.Driver

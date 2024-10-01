@@ -5,7 +5,7 @@ spring:
     username: root
     password: lMXhnTAVdYGbGg8yPg7BShHC/QyluPhrGdVogm5bCw9NIli4QB4rmIKk61+d+uhs3f70KvTFUg70WMNValZKSQ==
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://117.72.80.181:3306/jc_club?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://47.100.62.48:3306/jc_club?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       initial-size: 20
@@ -31,7 +31,7 @@ spring:
     # Redis数据库索引（默认为0）
     database: 1
     # Redis服务器地址
-    host: 117.72.80.181
+    host: 47.100.62.48
     # Redis服务器连接端口
     port: 6379
     # Redis服务器连接密码（默认为空）
